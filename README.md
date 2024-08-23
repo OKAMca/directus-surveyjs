@@ -12,7 +12,7 @@ A Directus Module extension that integrates the SurveyJS Creator into Directus.
 - [Configuration](#configuration)
 - [Using the Builder](#using-the-builder)
 - [API Endpoints](#api-endpoints)
-- [TODOs](#todos)
+- [Handling Form Submissions](#handling-form-submissions)
 - [Contributing](#contributing)
 - [License](#license)
 
