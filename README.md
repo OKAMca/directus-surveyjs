@@ -1,7 +1,7 @@
 
 ![Design sans titre](https://github.com/user-attachments/assets/90bcacdf-c118-44c1-a61c-c297280f8720)
 
-# Directus Extension for SurveyJS
+# Directus Extension: Survey
 
 A Directus Module extension that integrates the SurveyJS Creator into Directus.
 
@@ -27,18 +27,13 @@ This extension allows you to create and manage surveys using the SurveyJS Creato
 
 ## Configuration
 
-After installation, add the required collections and fields:
+### Basic Setup
 
-### Collections
+After installation, the first time you will open the module page, you will be prompted with a form to finish the basic configuration.
+The first field allows you to give the name to the collection that will be used to store all your form configurations. Default is `form_configs`
 
-1. **form_configs**
-   - `schema` (JSON): JSON code; should be readonly.
-   - `friendly_id` (String): Text input. <br/>
-   Follow this video to see in details how to configure it : 
-
-https://github.com/user-attachments/assets/4e09c136-99e3-4083-9aa1-7f1596e411af
-
-2. **languages**
+If you don't already have the `languages` collection made by directus, make sure to create one. <br/>
+**languages**
    - `code` (String): Text.
    - `name` (String): Text.
    - `direction` (String): Text. <br/>
@@ -46,6 +41,30 @@ https://github.com/user-attachments/assets/4e09c136-99e3-4083-9aa1-7f1596e411af
 
 
 https://github.com/user-attachments/assets/019e914a-3284-472c-a9a1-38c92ff33aec
+
+Clicking the `Finish setup` button will create the basic necessary collections for the creator to work.
+Collections created :
+- form_configs
+- module_extension_survey_settings <br />
+
+
+### Translations
+
+The translations available in the creator are based on the languages you have setup in your directus instance https://docs.directus.io/guides/headless-cms/content-translations.html#create-a-languages-collection
+
+Module translations strings to add to your directus instance : 
+- `$t:extension_survey_form_creator` : Title used in the page navigation of the module "Form Creator"
+- `$t:extension_survey_no_forms` : Message displayed when no forms are found, should be something like "No forms available"
+- `$t:extension_survey_module_name` : Name of the module, should be something like "Forms"
+
+Handle default form creator form language:
+Add a field M2O inside the `module_extension_survey_settings` collection named `default_form_language`.
+From there, choose in the settings your default language.
+
+### Settings
+The settings provide the default SurveyJS options available to the creator listed here https://surveyjs.io/survey-creator/documentation/api-reference/icreatoroptions
+In addition, there is the `licence_key` option that allows you to put your license for SurveyJS.
+You can also add manually a field with the key `default_form_language` M2O to `languages` collection to handle the default form language
 
 
 ### Activation
@@ -105,11 +124,83 @@ Example: `https://directus-domain-example/survey-api/form-config-create`
 - **Endpoint**: `POST /form-config-create`
 - **Description**: Used internally to potentially add a create form button inside the listing of the module.
 
-## TODOs
+## Handling Form Submissions
 
-- Add breadcrumb Directus Navigation inside the Module.
-- Add Page navigation inside the Module.
-- Add Dynamic collection name for `form_configs`.
+To handle form submissions, you need to create to create a collection that will be used as a type of submission.
+Each form configuration accepts one type of form submission.
+To make the process easier, create a collection called `base_form_submissions` that will be used as base for each type.
+
+### Create `base_form_submissions`
+Fields: 
+- `form_data`: (JSON Code)
+- `form_language`: (M2O) with `languages`
+- `form_config`: (M2O) with `form_configs`
+- `form_config_version_data`: (Date / Hour)
+
+### Create your form submission collection
+This collection can take the name you wish.
+Add the fields you wish to the collection to collect the data in a presentable way (optionnal)
+
+#### Using `base_form_submission`
+1. Install https://github.com/hanneskuettner/directus-extension-inline-form-interface
+2. Add a field called `default_fields` and link it to `base_form_submissions`
+
+### Example code for submission 
+```tsx
+  const saveSurveyResults = (url: string, json: JSONObject) => {
+    const entriesFieldMap = Object.entries(fieldMap ?? {})
+
+    const mappedFields = entriesFieldMap
+      .map(([key, value]: string[]) => {
+        if (json?.[value]) {
+          return [key, json?.[value]]
+        }
+        return null
+      })
+      .filter((el) => el !== null)
+
+    const body = {
+      ...Object.fromEntries(mappedFields),
+      ...additionalData,
+      default_fields: {
+        form_data: {
+          ...json,
+          ...additionalData,
+        },
+        form_config: formConfigId,
+        form_language: locale,
+        form_config_version_date: versionDate,
+      },
+    }
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Handle success
+        } else {
+          // Handle error
+        }
+      })
+      .catch((error) => {
+        // Handle error
+      })
+  }
+
+  const handleComplete = useCallback((form: Model) => {
+    saveSurveyResults(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/survey-api/form-submission/${formConfigId}`, form.data)
+  }, [])
+
+  survey.onComplete.add(handleComplete)
+
+  return <Survey model={survey} />
+```
+
 
 ## Contributing
 
@@ -122,3 +213,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Feel free to contribute or suggest improvements!
+
