@@ -1,4 +1,4 @@
-# Directus Extension: Survey
+# Directus Extension for SurveyJS
 
 A Directus Module extension that integrates the SurveyJS Creator into Directus.
 
