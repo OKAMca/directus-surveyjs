@@ -1,7 +1,7 @@
 
 ![Design sans titre](https://github.com/user-attachments/assets/90bcacdf-c118-44c1-a61c-c297280f8720)
 
-# Directus Extension: Survey
+# Directus Extension for SurveyJS
 
 A Directus Module extension that integrates the SurveyJS Creator into Directus.
 
