@@ -66,7 +66,6 @@ The settings provide the default SurveyJS options available to the creator liste
 In addition, there is the `licence_key` option that allows you to put your license for SurveyJS.
 You can also add manually a field with the key `default_form_language` M2O to `languages` collection to handle the default form language
 
-
 ### Activation
 
 Activate the module by navigating to:
@@ -105,11 +104,10 @@ Example: `https://directus-domain-example/survey-api/form-config-create`
 
 ### Create Form Entry
 
-- **Endpoint**: `POST /survey-submission/:formConfigId/:formCollection`
+- **Endpoint**: `POST /form-submission/:formConfigId`
 - **Description**: Creates a form entry from a form submission.
 - **URL Parameters**:
   - `formConfigId`: The ID of the `form_configs` object.
-  - `formCollection`: The collection you wish to create an object from.
 - **Request Requirements**:
   - **Body**: The data from the form.
   - **Headers**: `{'Content-Type': 'application/json'}`
@@ -126,27 +124,80 @@ Example: `https://directus-domain-example/survey-api/form-config-create`
 
 ## Handling Form Submissions
 
-To handle form submissions, you need to create to create a collection that will be used as a type of submission.
-Each form configuration accepts one type of form submission.
-To make the process easier, create a collection called `base_form_submissions` that will be used as base for each type.
+To handle form submissions, you need to create a collection that will be used as a type of submission.
+Each form configuration accepts one type of form submission by passing it the name of the collection created in the field `form_submission_collection`.
+When submitting a form with this config, an entry will be created in that collection.
 
-### Create `base_form_submissions`
-Fields: 
-- `form_data`: (JSON Code)
-- `form_language`: (M2O) with `languages`
-- `form_config`: (M2O) with `form_configs`
-- `form_config_version_data`: (Date / Hour)
+Example : If your form submission collection is called `registrations`, your field should contain the exact name `registrations` in your form_config's form_submission_collection field
 
 ### Create your form submission collection
 This collection can take the name you wish.
-Add the fields you wish to the collection to collect the data in a presentable way (optionnal)
+Add the fields you wish to collect data from the form. 
+Examples : 
+- form_data -> Code (JSON): all data from the form
+- last_name -> Text : a field that would have the a last name as an input
 
-#### Using `base_form_submission`
-1. Install https://github.com/hanneskuettner/directus-extension-inline-form-interface
-2. Add a field called `default_fields` and link it to `base_form_submissions`
+You can use the **Field Map** in the form config to map fields created from SurveyJS to a field inside you form submission collection.
+If you use the same function to map your fields as the one used in the code example showed below, your mapping should look like the example below.
 
-### Example code for submission 
+Example: 
+
+Data received from SurveyJS :
+```js
+{
+   firstName: "John",
+   lastName: "Doe"
+}
+```
+
+Field names in form submission collection:
+```js
+{
+   first_name: Text,
+   last_name: Text
+}
+```
+
+Your field map should look like 
+
+```json
+{
+   "first_name": "firstName",
+   "last_name": "lastName"
+}
+```
+
+### Example code for submission in React
 ```tsx
+import { useCallback } from 'react'
+import { Model } from 'survey-core'
+import { Survey } from 'survey-react-ui'
+import 'survey-core/defaultV2.min.css'
+import 'survey-core/survey.i18n'
+
+interface TDirectusSurveyProps {
+  formConfigId: string
+  schema: JsonObject
+  locale?: string
+  versionDate?: string
+  fieldMap?: JsonObject
+  additionalData?: JsonObject
+}
+
+type JsonValue = string | number | boolean | null | JsonObject | JsonArray
+interface JsonObject {
+  [key: string]: JsonValue
+}
+
+type JsonArray = Array<JsonValue>
+
+const DirectusSurvey = (props: TDirectusSurveyProps) => {
+  const { locale = 'default', schema, formConfigId, fieldMap, additionalData, versionDate } = props
+
+  const survey = new Model(schema)
+  survey.locale = locale
+
+  // Survey onComplete handler
   const saveSurveyResults = (url: string, json: JSONObject) => {
     const entriesFieldMap = Object.entries(fieldMap ?? {})
 
@@ -193,12 +244,16 @@ Add the fields you wish to the collection to collect the data in a presentable w
   }
 
   const handleComplete = useCallback((form: Model) => {
-    saveSurveyResults(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/survey-api/form-submission/${formConfigId}`, form.data)
+    saveSurveyResults(`{{ your domain here }}/survey-api/form-submission/${formConfigId}`, form.data)
   }, [])
 
   survey.onComplete.add(handleComplete)
 
   return <Survey model={survey} />
+}
+
+export default DirectusSurvey
+
 ```
 
 
