@@ -5,7 +5,6 @@ const createFormConfigsFields = async (fieldsStore: any, collectionKey: string) 
   const { 
     createTextField,
     createJSONField,
-    createAutocompleteInput,
     createDateUpdatedField,
     createDateCreatedField,
   } = getFieldsStoreUtils(collectionKey, fieldsStore)
@@ -17,7 +16,7 @@ const createFormConfigsFields = async (fieldsStore: any, collectionKey: string) 
     createTextField("friendly_id", {required: true}),
     createJSONField("field_map"),
     createJSONField("schema", {readonly: true}),
-    createAutocompleteInput("form_submission_collection", `/survey-api/form-submissions-collections/{{value}}`)
+    createTextField("form_submission_collection")
   ]
 
   await Promise.all(tasks)

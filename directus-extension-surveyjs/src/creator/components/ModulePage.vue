@@ -16,20 +16,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, toRefs } from 'vue';
 import { TBreadcrumb, TPage } from '../types';
 import PageNavigation from './PageNavigation.vue'
 import { useI18n } from 'vue-i18n';
 import { useI18nFallback } from '../composables/usei18nFallback';
 
 
-const { page, breadcrumb } = defineProps<{
+const props = defineProps<{
   page: TPage
   breadcrumb: Array<TBreadcrumb>
 }>()
 
-const current = ref(page?.uri)
-const pageTitle = ref(page?.label)
+const { page, breadcrumb } = toRefs(props)
+
+const current = ref(page?.value.uri)
+const pageTitle = ref(page?.value.label)
+
+watch( 
+  () => page,
+  (newPage) => {
+    current.value = newPage.value.uri;
+    pageTitle.value = newPage.value.label;
+  },
+  { deep: true }
+)
 
 const { t } = useI18nFallback(useI18n())
 

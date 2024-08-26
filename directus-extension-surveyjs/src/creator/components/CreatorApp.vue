@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-	import { createApp, onMounted, ref } from 'vue'
+	import { createApp, onMounted, ref, watch } from 'vue'
 	import SurveyCreator from './Creator.vue'
 	import { surveyPlugin } from "survey-vue3-ui";
 	import { surveyCreatorPlugin } from "survey-creator-vue";
@@ -15,6 +15,7 @@
 	import { settingsCollectionKey } from '../lib/settings';
 	import { useI18n } from 'vue-i18n';
 	import { useI18nFallback } from '../composables/usei18nFallback';
+import { SurveyCreatorModel } from 'survey-creator-core';
 	
 	const creatorApp = ref()
 
@@ -41,7 +42,22 @@
 		}
 	])
 
-	
+
+	const saveForm = async (creator: SurveyCreatorModel) => { 
+    const formTitle = creator.JSON.title as string | undefined
+    const response = await api.patch<any, any, TFormConfig>(
+      `/survey-api/form-config-update/${props.form}`, 
+      { title: formTitle, schema: creator.text }, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+		if (formTitle) {
+			page.value.label = formTitle
+		}
+  }
 
 	onMounted(async () => {
 		try {
@@ -56,7 +72,7 @@
 			const formsRes = await api.get(`/items/${settings.value['form_config_collection'] ?? 'form_configs'}`)
 			const formConfigs = (formsRes?.data?.data as Array<TFormConfig>)
 			formConfig.value = formConfigs?.find(config => config?.id == props.form)
-			page.value = {label: `${t('form_creator')}: ${formConfig.value?.friendly_id}`, uri: 'creator'}
+			page.value = {label: `${formConfig.value?.title ?? formConfig.value?.friendly_id}`, uri: 'creator'}
 
 		} catch (error) {
 			console.error('Failed to fetch forms:', error)
@@ -67,8 +83,9 @@
 			formConfig: formConfig.value,
 			user: user.value,
 			languages: languages.value, 
+			settings: settings.value,
 			api,
-			settings: settings.value
+			saveForm,
 		}).use(surveyPlugin).use(surveyCreatorPlugin)
 
 		if (creatorApp.value) {

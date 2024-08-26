@@ -21,11 +21,10 @@
     languages: Array<TDirectusLanguage>
     api: ReturnType<typeof useApi>
     settings: Record<string, any>
+    saveForm: (creator: SurveyCreatorModel) => void
   }>()
 
-  const { form, formConfig, api, user, languages, settings } = props
-
-  console.log(props)
+  const { saveForm, formConfig, user, languages, settings } = props
 
   const getLanguageCode = (string: string | undefined) => {
     return string?.split('-')[0]
@@ -48,16 +47,5 @@
     creator.text = JSON.stringify(formConfig?.schema)
   }
 
-  creator.saveSurveyFunc = async () => { 
-    const formTitle = creator.JSON.title as string | undefined
-    const response = await api.patch<any, any, TFormConfig>(
-      `/survey-api/form-config-update/${form}`, 
-      { title: formTitle, schema: creator.text }, 
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-  };
+  creator.saveSurveyFunc = async () => await saveForm(creator)
 </script>
