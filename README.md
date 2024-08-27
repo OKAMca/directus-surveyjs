@@ -47,6 +47,11 @@ Collections created :
 - form_configs
 - module_extension_survey_settings <br />
 
+Permissions: 
+- `form_configs`: READ
+- `module_extension_survey_settings`: READ
+- `[form_submission_collection]`: CREATE
+
 
 ### Translations
 
