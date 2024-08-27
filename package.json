@@ -1,6 +1,6 @@
 {
 	"name": "directus-extension-surveyjs",
-	"description": "Please enter a description for your extension",
+	"description": "Bundles a module and api endpoints Directus extenstions with SurveyJS to make the form creation and submission process easier",
 	"icon": "extension",
 	"version": "1.0.0",
 	"keywords": [
