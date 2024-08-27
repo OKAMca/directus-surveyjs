@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { defineEndpoint } from '@directus/extensions-sdk'
 import { isEmpty } from 'lodash'
-// import { Model } from 'survey-core'
 
 export default defineEndpoint((router, { services, getSchema }) => {
 
@@ -67,7 +66,9 @@ export default defineEndpoint((router, { services, getSchema }) => {
       await createItemInCollection(formSubmissionCollection, data)
       
     } catch (error) {
-      res.status(404).json(error)
+      const e = error as {name?: string, status?: number, code?: string}
+      const status = e?.status
+      res?.status(status ?? 404).json(error)
     }
   })
 
@@ -104,7 +105,9 @@ export default defineEndpoint((router, { services, getSchema }) => {
       })
 
     } catch (error) {
-      res.status(404).json(error)
+      const e = error as {name?: string, status?: number, code?: string}
+      const status = e?.status
+      res?.status(status ?? 404).json(error)
     }
   })
 
@@ -138,7 +141,9 @@ export default defineEndpoint((router, { services, getSchema }) => {
       res.json(data)
 
     } catch (error) {
-      res.status(404).json(error)
+      const e = error as {name?: string, status?: number, code?: string}
+      const status = e?.status
+      res?.status(status ?? 404).json(error)
     }
   })
 })
