@@ -23,7 +23,7 @@ This extension allows you to create and manage surveys using the SurveyJS Creato
 ## Installation
 
 - [Official Guide](https://docs.directus.io/extensions/installing-extensions.html)
-- NPM Package not released yet so you need to use the source code directly
+- NPM Package: https://www.npmjs.com/package/directus-extension-surveyjs
 
 ## Configuration
 
