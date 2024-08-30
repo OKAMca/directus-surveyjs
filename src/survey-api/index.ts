@@ -8,30 +8,50 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
   const settingsCollectionKey = "module_extension_survey_settings"
 
-  router.post('/form-submission/:formConfigId', async (req, res) => {
-    try {
-      const { formConfigId } = req.params
+  const catchError = (error: unknown, res: any, message: string) => {
+    const e = error as {name?: string, status?: number, code?: string}
+    const status = e?.status
+    return res?.status(status ?? 404).json({...e, details: message})
+  }
 
+  const getSettings = async (req: any, res: any): Promise<Record<string, any>[]> => {
+    try {
       const settingsService = new ItemsService(settingsCollectionKey, {
         schema: await getSchema(),
 				// @ts-ignore
         accountability: req.accountability,
       })
-      
-      const settings = await settingsService.readByQuery({
-        limit: 1
-      })
+        return await settingsService.readByQuery({
+          limit: 1
+        })
+      } catch (error) {
+        return catchError(error, res, 'Your module_extension_survey_settings or related collection READ permissions must be allowed.')
+      }
+  }
 
-      const formConfigCollection = settings[0]['form_config_collection'] ?? 'form_configs'
+  router.post('/form-submission/:formConfigId', async (req, res) => {
 
-      // Fetch the survey definition from the form_config collection
-      const formConfigService = new ItemsService(formConfigCollection, {
-        schema: await getSchema(),
-				// @ts-ignore
-        accountability: req.accountability,
-      })
+    const settings = await getSettings(req, res)
 
-      const formConfig = await formConfigService.readOne(formConfigId)
+    try {
+      const { formConfigId } = req.params 
+
+      const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
+
+      let formConfig
+      try {
+        // Fetch the survey definition from the form_config collection
+        const formConfigService = new ItemsService(formConfigCollection, {
+          schema: await getSchema(),
+          // @ts-ignore
+          accountability: req.accountability,
+        })
+  
+        formConfig = await formConfigService.readOne(formConfigId)
+
+      } catch (error) {
+        return catchError(error, res, `Your ${formConfigCollection} or related collection READ permissions must be allowed.`)
+      }
       const formSubmissionCollection = formConfig.form_submission_collection
 
       if (!formConfig || !formSubmissionCollection) {
@@ -54,8 +74,12 @@ export default defineEndpoint((router, { services, getSchema }) => {
 					// @ts-ignore
           accountability: req.accountability,
         })
-
-        const newItem = await responseService.createOne(itemData)
+        let newItem
+        try {
+          newItem = await responseService.createOne(itemData)
+        } catch (error) {
+          return catchError(error, res, `Your ${collectionName} or related collection CREATE permissions must be allowed.`)
+        }
 
         res.status(201).json({
           message: 'Survey submitted successfully',
@@ -76,18 +100,12 @@ export default defineEndpoint((router, { services, getSchema }) => {
     try {
       const { formConfigId } = req.params
 
-      const settingsService = new ItemsService(settingsCollectionKey, {
-        schema: await getSchema(),
-				// @ts-ignore
-        accountability: req.accountability,
-      })
-      
-      const settings = await settingsService.readByQuery({
-        limit: 1
-      })
+      const settings = await getSettings(req, res)
 
-      const formConfigCollection = settings[0]['form_config_collection'] ?? 'form_configs'
+      const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
 
+      let data
+      try {
       // Fetch the survey definition from the form_config collection
       const formConfigService = new ItemsService(formConfigCollection, {
         schema: await getSchema(),
@@ -95,9 +113,12 @@ export default defineEndpoint((router, { services, getSchema }) => {
         accountability: req.accountability,
       })
 
-      const data = await formConfigService.updateOne(formConfigId, {
+      data = await formConfigService.updateOne(formConfigId, {
         ...req.body
       })
+    } catch (error) {
+      return catchError(error, res, `Your ${formConfigCollection} or related collection PATCH permissions must be allowed.`)
+    }
 
       res.json({
         id: data,
@@ -114,29 +135,24 @@ export default defineEndpoint((router, { services, getSchema }) => {
   router.post('/form-config-create', async (req, res) => {
     try {
 
-      const settingsService = new ItemsService(settingsCollectionKey, {
-        schema: await getSchema(),
-				// @ts-ignore
-        accountability: req.accountability,
-      })
-      
-      const settings = await settingsService.readByQuery({
-        limit: 1
-      })
+      const settings = await getSettings(req, res)
 
-      const formConfigCollection = settings[0]['form_config_collection'] ?? 'form_configs'
+      const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
+      let data
+      try {
 
-      // Fetch the survey definition from the form_config collection
-      const formConfigService = new ItemsService(formConfigCollection, {
-        schema: await getSchema(),
-				// @ts-ignore
-        accountability: req.accountability,
-      })
-
-
-      const data = await formConfigService.createOne({
-        ...req.body
-      })
+        // Fetch the survey definition from the form_config collection
+        const formConfigService = new ItemsService(formConfigCollection, {
+          schema: await getSchema(),
+          // @ts-ignore
+          accountability: req.accountability,
+        })
+        data = await formConfigService.createOne({
+          ...req.body
+        })
+      } catch (error) {
+        return catchError(error, res, `Your ${formConfigCollection} or related collection CREATE permissions must be allowed.`)
+      }
 
       res.json(data)
 

@@ -35,7 +35,6 @@ const formConfigCollectionKey = ref('form_configs')
 const hasSettings = ref(!!collectionsStore.getCollection(settingsCollectionKey))
 
 const finishSetup = async () => {
-  console.log(formConfigCollectionKey.value)
   await createSettingsCollection(collectionsStore, fieldsStore)
   await createFormConfigsCollection(collectionsStore, fieldsStore, formConfigCollectionKey.value)
   hasSettings.value = true
