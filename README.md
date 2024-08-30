@@ -76,11 +76,6 @@ You can also add manually a field with the key `default_form_language` M2O to `l
 Activate the module by navigating to:
 `Settings -> Settings -> Modules` and enabling the Survey module.
 
-
-https://github.com/user-attachments/assets/977c7ede-6f3c-41ff-a82b-4cf1ffd3942e
-
-
-
 ## Using the Builder
 
 ### Creating / updating and saving a form
@@ -90,9 +85,6 @@ https://github.com/user-attachments/assets/977c7ede-6f3c-41ff-a82b-4cf1ffd3942e
 3. **Open the Builder**: Click on a form configuration to access its builder.
 4. **Build Your Form**: Use the builder to create your form. Remember to save your work!
 5. **Verify Schema**: After saving, go back to your Directus content and find the modified `form_config`. The `schema` should be updated with the new schema generated from the builder.
-
-
-https://github.com/user-attachments/assets/df76c801-f0a7-469d-8a19-d9f20782fecb
 
 ### How translations work
 
