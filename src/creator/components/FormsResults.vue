@@ -35,7 +35,7 @@ const displayTemplate = props.displayTemplate ?? info.value?.meta?.display_templ
 				<v-text-overflow :text="hit[descriptionField]" :highlight="searchValue" class="hit-description" />
 			</div>
       <v-button :to="`/content/${collection}/${hit[primaryKeyField?.field ?? index]}`" icon rounded class="open-in-new">
-        <v-icon name="open_in_new" />
+        <v-icon name="settings" />
       </v-button>
 		</v-list-item>
 	</v-detail>
