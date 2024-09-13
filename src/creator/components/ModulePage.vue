@@ -1,5 +1,8 @@
 <template>
   <private-view :title="pageTitle">
+    <template #actions>
+      <slot name="actions"></slot>
+    </template>
     <template v-if="breadcrumb" #headline>
       <v-breadcrumb :items="breadcrumb" />
     </template>
@@ -11,7 +14,7 @@
           <div class="page-description" />
       </sidebar-detail>
     </template>
-    <slot></slot>
+    <slot name="content"></slot>
   </private-view>
 </template>
 

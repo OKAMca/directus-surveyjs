@@ -1,6 +1,8 @@
 <template>
   <module-page :page :breadcrumb>
-		<div ref="creatorApp" id="sub-app"></div>
+		<template #content>
+			<div ref="creatorApp" id="sub-app"></div>
+		</template>
 	</module-page>
 </template>
 

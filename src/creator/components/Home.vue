@@ -1,22 +1,29 @@
 <template>
   <module-page :page :breadcrumb>
-    <div v-if="hasSettings">
-      <forms />
-    </div>
-    <div class="button-container" v-else>
-      <label for="formConfigCollection">Collection key for form configuration collection : </label>
-      <input class="input" id="formConfigCollection" v-model="formConfigCollectionKey" type="text"/>
-      <VButton @click="finishSetup">
-        {{t('finish_setup')}}
-      </VButton>
-    </div>
+    <template #actions>
+      <v-button :to="`/content/${settings['form_config_collection'] ?? 'form_configs'}/+`" icon rounded>
+        <v-icon name="add" />
+      </v-button>
+    </template>
+    <template #content>
+      <div v-if="hasSettings">
+        <forms />
+      </div>
+      <div class="button-container" v-else>
+        <label for="formConfigCollection">Collection key for form configuration collection : </label>
+        <input class="input" id="formConfigCollection" v-model="formConfigCollectionKey" type="text"/>
+        <VButton @click="finishSetup">
+          {{t('finish_setup')}}
+        </VButton>
+      </div>
+    </template>
   </module-page>
 </template>
 
 <script setup lang="ts" async>
-import { useStores } from '@directus/extensions-sdk'
+import { useStores, useApi } from '@directus/extensions-sdk'
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { TPage, type TBreadcrumb } from '../types';
 import ModulePage from './ModulePage.vue'
 import Forms from './Forms.vue'
@@ -29,6 +36,9 @@ const { useCollectionsStore, useFieldsStore } = useStores()
 const collectionsStore = useCollectionsStore()
 const fieldsStore = useFieldsStore()
 const { t } = useI18nFallback(useI18n())
+
+const api = useApi()
+const settings = ref({})
 
 const formConfigCollectionKey = ref('form_configs')
 
@@ -47,6 +57,15 @@ const breadcrumb = ref<Array<TBreadcrumb>>([
     to: '/surveys'
   }
 ])
+
+onMounted(async () => {
+		try {
+			const settingsRes = await api.get(`/items/${settingsCollectionKey}`)
+			settings.value = (settingsRes?.data?.data)
+		} catch (error) {
+			console.error('Failed to fetch forms:', error)
+		}
+	})
 
 </script>
 

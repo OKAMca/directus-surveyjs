@@ -9,7 +9,6 @@
 					<v-progress-circular v-if="loading" indeterminate />
 				</template>
       </v-input>
-      <!-- <v-button @click="search(searchValue)">Search</v-button> -->
     </div>
     <section class="search-results">
       <v-list v-if="results.length > 0 && !loading" class="search-results-list">
@@ -53,12 +52,6 @@ const debouncedSearch = useDebounceFn(() => {
 	}
 }, 500);
 
-const collectionsToSearch = [
-	{
-		collection: 'products',
-		
-	},
-];
 
 async function search(value: string) {
 	try {
