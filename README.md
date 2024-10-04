@@ -18,7 +18,30 @@ A Directus Module extension that integrates the SurveyJS Creator into Directus.
 
 ## Introduction
 
+
 This extension allows you to create and manage surveys using the SurveyJS Creator directly within Directus. It provides a seamless interface for building, updating, and storing survey configurations.
+
+## Architecture
+
+```mermaid
+graph TD
+    U[User] -->|Submits Form| FE[Frontend Application]
+    A[Administrator] -->|Manages Forms| DA[Directus Admin Interface]
+    
+    subgraph Directus System
+        DA -->|Creates/Edits Forms| SJM[SurveyJS Module]
+        FE -->|Submits Data| FSW[Form Submission Webhook]
+        FSW -->|Triggers| DF[Directus Flow]
+        DF -->|Merges Data| DC[Directus Collections]
+        DF -->|Sends| EN[Email Notifications]
+        SJM -->|Configures| DF
+        SJM -->|Generates JSON| SR[SurveyJS Renderer]
+    end
+    
+    SR -->|Renders Form| FE
+    DC -->|Stores Data| DB[(Database)]
+    EN -->|Sends Emails| ES[Email Service]
+```
 
 ## Installation
 
