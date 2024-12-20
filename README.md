@@ -259,7 +259,7 @@ export default DirectusSurvey
 
 ```
 
-## Notification
+## Notifications
 
 Notifications play a crucial role in managing email alerts triggered by form submissions.
 
