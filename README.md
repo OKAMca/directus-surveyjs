@@ -13,6 +13,7 @@ A Directus Module extension that integrates the SurveyJS Creator into Directus.
 - [Using the Builder](#using-the-builder)
 - [API Endpoints](#api-endpoints)
 - [Handling Form Submissions](#handling-form-submissions)
+- [Notifications](#notifications)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -134,6 +135,11 @@ Examples :
 - form_data -> Code (JSON): all data from the form
 - last_name -> Text : a field that would have the a last name as an input
 
+If you create a form submission collection for a specific form config, you need to specify it in the form config in the form_submission_collection field. The field value should be the name of your form submission collection.
+Example : 
+
+You created a form submission collection called `registrations`. You need to put `registrations` as the value of the form_submission_collection field.
+
 You can use the **Field Map** in the form config to map fields created from SurveyJS to a field inside you form submission collection.
 If you use the same function to map your fields as the one used in the code example showed below, your mapping should look like the example below.
 
@@ -252,6 +258,22 @@ const DirectusSurvey = (props: TDirectusSurveyProps) => {
 export default DirectusSurvey
 
 ```
+
+## Notification
+
+Notifications play a crucial role in managing email alerts triggered by form submissions.
+
+Each `form_config` is associated with the `notifications_template` collection through a many-to-many relationship. Notification templates use a simple templating engine that supports the insertion of variables from form submissions, formatted as {{ variable_name }}.
+
+Key components of a notification template include:
+
+- **Recipients**: This field lists the email addresses that will receive the notification when a form is submitted.
+- **Title**: This is used to identify different templates within Directus.
+- **Subject**: The subject line of the email.
+- **Template**: The content body of the email.
+- **Conditions**: You can specify JavaScript expressions here to determine whether the notification should be sent.
+
+When a notification is successfully dispatched, a new item is created in the `notifications` collection.
 
 
 ## Contributing
