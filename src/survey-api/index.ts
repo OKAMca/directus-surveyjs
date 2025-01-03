@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 
 export default defineEndpoint((router, { services, getSchema }) => {
 
-  const { ItemsService } = services
+  const { ItemsService, FieldsService } = services
 
   const settingsCollectionKey = "module_extension_survey_settings"
 
@@ -69,21 +69,54 @@ export default defineEndpoint((router, { services, getSchema }) => {
 
       const createItemInCollection = async (collectionName: string, itemData: object) => {
         // If validation passes, save the data to your collection
-        const responseService = new ItemsService(collectionName, {
-          schema: await getSchema(),
+        const schema = await getSchema()
+        const fieldsService = new FieldsService({
+          schema: schema,
 					// @ts-ignore
           accountability: req.accountability,
         })
+        const fields = await fieldsService.readAll(collectionName)
+        const fieldsTypes = Object.fromEntries(fields.map((f: {field: string, type: string}) => [f.field, f.type]))
+        const responseService = new ItemsService(collectionName, {
+          schema: schema,
+					// @ts-ignore
+          accountability: req.accountability,
+        })
+
+        let problematicData:[string, any][]  = []
+
+        let dataCopy = {}
+
+        const compareTypes = (tsType: string, directusType: string) => {
+          if (tsType === "string" && directusType === "timestamp") {
+            return true
+          }
+          const directusNumberTypes = ['integer', 'float', 'decimal', 'bigInteger']
+          if (tsType === "number" && directusNumberTypes.includes(directusType)) {
+            return true
+          }
+          return tsType === directusType
+        }
+
+        Object.entries(itemData).forEach(d => {
+          if (!compareTypes(typeof d[1], fieldsTypes[d[0]]) && fieldsTypes[d[0]] !== "uuid") {
+            problematicData.push(d)
+          } else {
+            dataCopy = {...dataCopy, [`${d[0]}`]: d[1]}
+          }
+        })
         let newItem
         try {
-          newItem = await responseService.createOne(itemData)
-        } catch (error) {
+          newItem = await responseService.createOne(dataCopy)
+        } catch (error) {``
           return catchError(error, res, `Your ${collectionName} or related collection CREATE permissions must be allowed.`)
         }
 
         res.status(201).json({
           message: 'Survey submitted successfully',
           item: newItem,
+          fieldsTypes,
+          warning: problematicData.length === 0 ? null : `The following data did not match types, skipping them. ${JSON.stringify(Object.fromEntries(problematicData))}`
         })
       }
 
