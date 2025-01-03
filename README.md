@@ -30,6 +30,26 @@ This extension allows you to create and manage surveys using the SurveyJS Creato
 
 ### Basic Setup
 
+#### Using template (recommended)
+
+
+1. Install the extension using the provided npm package in your directus instance
+2. Download the directus template ([directus-surveyjs-template.zip](https://github.com/user-attachments/files/18302567/directus-surveyjs-template.zip)) containing basic collections and flows to work with the extension. The template contains:
+   - The form configuration collection (2 already configured forms as example available)
+   - The languages collection (if not already created)
+   - A basic generic form submission collection
+   - A basic form submission collection named Registrations (can be deleted) as an example.
+   - A Notifications Template collection
+   - A Notifications collection
+   - Flows to handle notifications
+3. Apply the the directus template to your directus instance using the following command :
+   ```bash
+   npx directus-template-cli@latest apply -p --directusUrl="your-directus-url" --directusToken="directus-admin-token" --templateLocation="local-path-to-template" --templateType="local" --partial --no-users --no-settings --no-files --no-dashboards --no-extensions
+   ```
+See [next steps -> Translations](#translations)
+
+#### Without template
+
 After installation, the first time you will open the module page, you will be prompted with a form to finish the basic configuration.
 The first field allows you to give the name to the collection that will be used to store all your form configurations. Default is `form_configs`
 
