@@ -32,6 +32,7 @@ This extension allows you to create and manage surveys using the SurveyJS Creato
 
 #### Using template (recommended)
 
+https://github.com/user-attachments/assets/1c7b7861-6338-4641-aed3-ea36e4c958d1
 
 1. Install the extension using the provided npm package in your directus instance
 2. Download the directus template (directus-surveyjs-template directory in repository) containing basic collections and flows to work with the extension. The template contains:
