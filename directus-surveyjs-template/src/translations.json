@@ -1,0 +1,26 @@
+[
+  {
+    "id": "4bd7adcd-abb6-4b54-bb10-774c59afbb4c",
+    "language": "fr-CA",
+    "key": "extension_survey_form_creator",
+    "value": "Créateur de formulaire"
+  },
+  {
+    "id": "7bbcb761-41a3-4a40-a63b-c7c25820a17a",
+    "language": "en-US",
+    "key": "extension_survey_form_creator",
+    "value": "Form Creator"
+  },
+  {
+    "id": "9ab97c72-f37d-4818-a38f-f01a906993a1",
+    "language": "en-US",
+    "key": "extension_survey_module_name",
+    "value": "Forms"
+  },
+  {
+    "id": "ff59d6a2-c56d-41c9-b7b0-35066c9dbc84",
+    "language": "fr-CA",
+    "key": "extension_survey_module_name",
+    "value": "Formulaires"
+  }
+]

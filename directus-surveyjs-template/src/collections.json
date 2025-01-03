@@ -1,0 +1,298 @@
+[
+  {
+    "collection": "form_configs",
+    "meta": {
+      "collection": "form_configs",
+      "icon": "receipt_long",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 1,
+      "group": null,
+      "collapse": "open",
+      "preview_url": "https://stack-git-stack-198-directus-survey-okam.vercel.app/directus-survey/{{id}}",
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "form_configs",
+      "comment": null
+    }
+  },
+  {
+    "collection": "form_configs_notifications_templates",
+    "meta": {
+      "collection": "form_configs_notifications_templates",
+      "icon": "import_export",
+      "note": null,
+      "display_template": null,
+      "hidden": true,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 3,
+      "group": "form_configs",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "form_configs_notifications_templates",
+      "comment": null
+    }
+  },
+  {
+    "collection": "form_submissions",
+    "meta": {
+      "collection": "form_submissions",
+      "icon": "inbox",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": "status",
+      "archive_app_filter": true,
+      "archive_value": "archived",
+      "unarchive_value": "draft",
+      "sort_field": "sort",
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 1,
+      "group": "form_configs",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "form_submissions",
+      "comment": null
+    }
+  },
+  {
+    "collection": "languages",
+    "meta": {
+      "collection": "languages",
+      "icon": null,
+      "note": null,
+      "display_template": null,
+      "hidden": true,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 3,
+      "group": null,
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "languages",
+      "comment": null
+    }
+  },
+  {
+    "collection": "module_extension_survey_settings",
+    "meta": {
+      "collection": "module_extension_survey_settings",
+      "icon": "settings",
+      "note": null,
+      "display_template": null,
+      "hidden": true,
+      "singleton": true,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 4,
+      "group": null,
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "module_extension_survey_settings",
+      "comment": null
+    }
+  },
+  {
+    "collection": "notifications",
+    "meta": {
+      "collection": "notifications",
+      "icon": "notifications_active",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": "status",
+      "archive_app_filter": true,
+      "archive_value": "archived",
+      "unarchive_value": "draft",
+      "sort_field": "sort",
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 2,
+      "group": "notifications_hub",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "notifications",
+      "comment": null
+    }
+  },
+  {
+    "collection": "notifications_hub",
+    "meta": {
+      "collection": "notifications_hub",
+      "icon": "notifications",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 2,
+      "group": null,
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": null
+  },
+  {
+    "collection": "notifications_templates",
+    "meta": {
+      "collection": "notifications_templates",
+      "icon": "edit_notifications",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": "status",
+      "archive_app_filter": true,
+      "archive_value": "archived",
+      "unarchive_value": "draft",
+      "sort_field": "sort",
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 1,
+      "group": "notifications_hub",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "notifications_templates",
+      "comment": null
+    }
+  },
+  {
+    "collection": "notifications_templates_translations",
+    "meta": {
+      "collection": "notifications_templates_translations",
+      "icon": "import_export",
+      "note": null,
+      "display_template": null,
+      "hidden": true,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": null,
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 1,
+      "group": "notifications_templates",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "notifications_templates_translations",
+      "comment": null
+    }
+  },
+  {
+    "collection": "registrations",
+    "meta": {
+      "collection": "registrations",
+      "icon": "app_registration",
+      "note": null,
+      "display_template": null,
+      "hidden": false,
+      "singleton": false,
+      "translations": null,
+      "archive_field": null,
+      "archive_app_filter": true,
+      "archive_value": null,
+      "unarchive_value": null,
+      "sort_field": "sort",
+      "accountability": "all",
+      "color": null,
+      "item_duplication_fields": null,
+      "sort": 2,
+      "group": "form_configs",
+      "collapse": "open",
+      "preview_url": null,
+      "versioning": false
+    },
+    "schema": {
+      "schema": "public",
+      "name": "registrations",
+      "comment": null
+    }
+  }
+]

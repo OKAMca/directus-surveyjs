@@ -1,0 +1,340 @@
+[
+  {
+    "collection": "notifications_templates",
+    "field": "user_created",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "notifications_templates_user_created_foreign",
+      "table": "notifications_templates",
+      "column": "user_created",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "notifications_templates",
+      "many_field": "user_created",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "notifications_templates",
+    "field": "user_updated",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "notifications_templates_user_updated_foreign",
+      "table": "notifications_templates",
+      "column": "user_updated",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "notifications_templates",
+      "many_field": "user_updated",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "notifications",
+    "field": "user_created",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "notifications_user_created_foreign",
+      "table": "notifications",
+      "column": "user_created",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "notifications",
+      "many_field": "user_created",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "notifications",
+    "field": "user_updated",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "notifications_user_updated_foreign",
+      "table": "notifications",
+      "column": "user_updated",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "notifications",
+      "many_field": "user_updated",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_submissions",
+    "field": "user_created",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "form_submissions_user_created_foreign",
+      "table": "form_submissions",
+      "column": "user_created",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "form_submissions",
+      "many_field": "user_created",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_submissions",
+    "field": "user_updated",
+    "related_collection": "directus_users",
+    "schema": {
+      "constraint_name": "form_submissions_user_updated_foreign",
+      "table": "form_submissions",
+      "column": "user_updated",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "directus_users",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "NO ACTION"
+    },
+    "meta": {
+      "many_collection": "form_submissions",
+      "many_field": "user_updated",
+      "one_collection": "directus_users",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "notifications_templates_translations",
+    "field": "languages_code",
+    "related_collection": "languages",
+    "schema": {
+      "constraint_name": "notifications_templates_translations_languages_code_foreign",
+      "table": "notifications_templates_translations",
+      "column": "languages_code",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "languages",
+      "foreign_key_column": "code",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "notifications_templates_translations",
+      "many_field": "languages_code",
+      "one_collection": "languages",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": "notifications_templates_id",
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "module_extension_survey_settings",
+    "field": "default_form_language",
+    "related_collection": "languages",
+    "schema": {
+      "constraint_name": "module_extension_survey_settings_default_f__5aa2a9e0_foreign",
+      "table": "module_extension_survey_settings",
+      "column": "default_form_language",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "languages",
+      "foreign_key_column": "code",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "module_extension_survey_settings",
+      "many_field": "default_form_language",
+      "one_collection": "languages",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_submissions",
+    "field": "form_language",
+    "related_collection": "languages",
+    "schema": {
+      "constraint_name": "form_submissions_form_language_foreign",
+      "table": "form_submissions",
+      "column": "form_language",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "languages",
+      "foreign_key_column": "code",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "form_submissions",
+      "many_field": "form_language",
+      "one_collection": "languages",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_configs_notifications_templates",
+    "field": "form_configs_id",
+    "related_collection": "form_configs",
+    "schema": {
+      "constraint_name": "form_configs_notifications_templates_form_configs_id_foreign",
+      "table": "form_configs_notifications_templates",
+      "column": "form_configs_id",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "form_configs",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "form_configs_notifications_templates",
+      "many_field": "form_configs_id",
+      "one_collection": "form_configs",
+      "one_field": "notification_templates",
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": "notifications_templates_id",
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_submissions",
+    "field": "form_config",
+    "related_collection": "form_configs",
+    "schema": {
+      "constraint_name": "form_submissions_form_config_foreign",
+      "table": "form_submissions",
+      "column": "form_config",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "form_configs",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "form_submissions",
+      "many_field": "form_config",
+      "one_collection": "form_configs",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": null,
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "notifications_templates_translations",
+    "field": "notifications_templates_id",
+    "related_collection": "notifications_templates",
+    "schema": {
+      "constraint_name": "notifications_templates_translations_notif__2465eab3_foreign",
+      "table": "notifications_templates_translations",
+      "column": "notifications_templates_id",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "notifications_templates",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "notifications_templates_translations",
+      "many_field": "notifications_templates_id",
+      "one_collection": "notifications_templates",
+      "one_field": "translations",
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": "languages_code",
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  },
+  {
+    "collection": "form_configs_notifications_templates",
+    "field": "notifications_templates_id",
+    "related_collection": "notifications_templates",
+    "schema": {
+      "constraint_name": "form_configs_notifications_templates_notif__39b36f13_foreign",
+      "table": "form_configs_notifications_templates",
+      "column": "notifications_templates_id",
+      "foreign_key_schema": "public",
+      "foreign_key_table": "notifications_templates",
+      "foreign_key_column": "id",
+      "on_update": "NO ACTION",
+      "on_delete": "SET NULL"
+    },
+    "meta": {
+      "many_collection": "form_configs_notifications_templates",
+      "many_field": "notifications_templates_id",
+      "one_collection": "notifications_templates",
+      "one_field": null,
+      "one_collection_field": null,
+      "one_allowed_collections": null,
+      "junction_field": "form_configs_id",
+      "sort_field": null,
+      "one_deselect_action": "nullify"
+    }
+  }
+]

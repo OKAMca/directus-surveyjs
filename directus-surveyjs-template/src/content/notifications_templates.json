@@ -1,0 +1,21 @@
+[
+  {
+    "id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a",
+    "status": "draft",
+    "sort": null,
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "date_created": "2024-09-20T16:25:10.439Z",
+    "user_updated": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "date_updated": "2025-01-03T14:47:42.103Z",
+    "recipients": [
+      {
+        "template_email": "{{email}}"
+      }
+    ],
+    "title": "Email confirmations",
+    "translations": [
+      2,
+      4
+    ]
+  }
+]

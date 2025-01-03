@@ -1,0 +1,11 @@
+{
+  "author": "",
+  "description": "",
+  "directusTemplate": true,
+  "files": [
+    "src"
+  ],
+  "name": "directus-template-surveyjs-template",
+  "templateName": "SurveyJS Template",
+  "version": "1.0.0"
+}

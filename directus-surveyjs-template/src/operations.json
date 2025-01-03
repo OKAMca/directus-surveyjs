@@ -1,0 +1,464 @@
+[
+  {
+    "id": "0a59cba2-8555-4644-8438-106cfcbbc873",
+    "name": "Log error",
+    "key": "log_error",
+    "type": "log",
+    "position_x": 72,
+    "position_y": 35,
+    "options": {
+      "message": "[Notifications] Notify recipient : Condition did not pass. {{$trigger}}"
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-12-06T14:29:55.813Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "0e67a67a-ddce-42dc-a7ef-8322f27247a0",
+    "name": "Read Form Config",
+    "key": "form_config_data",
+    "type": "item-read",
+    "position_x": 37,
+    "position_y": 1,
+    "options": {
+      "permissions": "$full",
+      "collection": "form_configs",
+      "key": "{{$last.form_config}}",
+      "query": null
+    },
+    "resolve": "19d85c04-6663-4524-92e1-a27b11504e92",
+    "reject": null,
+    "flow": "b44d3e90-970b-4678-851c-96efcd7b0aaf",
+    "date_created": "2024-09-20T15:06:10.729Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "16e0bd4c-0994-4473-aa1c-75db2eafb636",
+    "name": "Real Form Submission Data",
+    "key": "real_form_submission_data",
+    "type": "exec",
+    "position_x": 55,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = async function(data) {\n    const last = data.$last\n    let realData;\n\tif (!data.$trigger.formSubmissionData.form_data) {\n        realData = {\n        \tnotificationTemplate: last,\n            formData: data.$trigger.formSubmissionData\n        } \n    } else {\n        realData = {\n        \tnotificationTemplate: last,\n            formData: data.$trigger.formSubmissionData.form_data\n        }\n    }\n\treturn realData;\n}"
+    },
+    "resolve": "a2196edb-a724-4341-908e-3dd012f05dff",
+    "reject": null,
+    "flow": "f88ff93e-e07c-499c-a61d-fd5c8a715979",
+    "date_created": "2024-12-06T15:00:49.704Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "175d278e-b505-4c91-9257-082640767044",
+    "name": "Parse Conditions",
+    "key": "parse_conditions",
+    "type": "exec",
+    "position_x": 36,
+    "position_y": 19,
+    "options": {
+      "code": "module.exports = async function(data) {\n\tconst conditions = data.$trigger.parsedNotificationTemplate.translation.conditions ?? true\n    const result = new Function(`return ${conditions}`)();\n\treturn result;\n}"
+    },
+    "resolve": "eabd7a86-a8ad-4604-bf16-c2746da59a91",
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-12-06T14:29:22.253Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "19d85c04-6663-4524-92e1-a27b11504e92",
+    "name": "Lancer le script",
+    "key": "exec_c6hs6",
+    "type": "exec",
+    "position_x": 55,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = async function(data) {\n    const formSubmissionData = data.form_submission_data\n\tconst notificationTemplates = data.$last.notification_templates\n    return notificationTemplates.map(template => {\n        return {\n            id: template,\n\t\t\tformSubmissionData,\n        }\n    })\n}"
+    },
+    "resolve": "70bbf70a-768c-4210-b518-11d3aaf3debd",
+    "reject": null,
+    "flow": "b44d3e90-970b-4678-851c-96efcd7b0aaf",
+    "date_created": "2024-09-20T15:06:10.711Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "2cbe4df5-cd07-4eac-ac98-d28b24677cbc",
+    "name": "Lancer le script",
+    "key": "translated_template",
+    "type": "exec",
+    "position_x": 37,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = async function(data) {\n\tlet translation\n    const translations = data.$last\n    const notificationTemplate = data.$trigger.notificationTemplate\n    const defaultTranslation = translations.find(t => t.languages_code === \"en-US\") ?? translations[0]\n    translation = translations.find(t => t.languages_code === data.$trigger.languageCode) ?? defaultTranslation\n    \n\treturn {\n        ...notificationTemplate,\n        translation\n    };\n}"
+    },
+    "resolve": "cbb62f4b-fab6-4bde-aaee-663c29efb61f",
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:16:49.232Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "31a9817e-928e-40bc-9bf2-1e1f4a65c013",
+    "name": "Lire les données",
+    "key": "item_read_vqvh1",
+    "type": "item-read",
+    "position_x": 37,
+    "position_y": 1,
+    "options": {
+      "permissions": "$full",
+      "collection": "notifications_templates",
+      "key": "{{$last.notifications_templates_id}}"
+    },
+    "resolve": "16e0bd4c-0994-4473-aa1c-75db2eafb636",
+    "reject": null,
+    "flow": "f88ff93e-e07c-499c-a61d-fd5c8a715979",
+    "date_created": "2024-09-20T15:13:45.937Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "57dedb97-de20-491e-aa06-dd879e3cb88d",
+    "name": "Créer des données",
+    "key": "item_create_elxwx",
+    "type": "item-create",
+    "position_x": 56,
+    "position_y": 1,
+    "options": {
+      "collection": "notifications",
+      "permissions": "$full",
+      "emitEvents": true,
+      "payload": {
+        "status": "success",
+        "body": "{{$trigger.parsedNotificationTemplate.translation.template}}",
+        "subject": "{{$trigger.parsedNotificationTemplate.translation.subject}}",
+        "to": "{{$trigger.recipient.template_email}}",
+        "collection_name": "{{$trigger.collectionName}}",
+        "collection_item_id": "{{$trigger.collectionItemId}}",
+        "notification_template_id": "{{$trigger.parsedNotificationTemplate.id}}"
+      }
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-09-20T15:10:15.326Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "5a2684d8-9fea-43e5-ac26-8f0f6c0f66bc",
+    "name": "Lancer le script",
+    "key": "exec_oad6b",
+    "type": "exec",
+    "position_x": 38,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = async function(data) {\n\treturn data;\n}"
+    },
+    "resolve": "57dedb97-de20-491e-aa06-dd879e3cb88d",
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-09-20T15:10:15.335Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "64696f30-09f7-4dee-a494-85fb00206259",
+    "name": "Validate",
+    "key": "validate",
+    "type": "exec",
+    "position_x": 19,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = function(data) {\n\tconst trigger = data.$trigger\n    \n    if (!trigger.template && typeof trigger.template !== 'string') {\n        throw new Error('Template is missing or not supplied in the proper format. Needs to be a string that contains the id of the template to render.')\n    }\n    \n    if (!trigger.data && typeof trigger.data !== 'object') {\n\t\tthrow new Error('Data is missing or not supplied in the proper format. Needs to be a object.')\n\n    }\n    \n    const keys = trigger.template.match(/\\{\\{\\s*([^}]+?)\\s*\\}\\}/g)\n    const cleanKeys = keys.map(key => key.substring(2, key.length - 2))\n    \n    const defaultedData = trigger.data\n    cleanKeys.forEach(key => {\n    \tif (!defaultedData[key]) defaultedData[key] = \"undefined\"\n    })\n\n    return defaultedData\n}"
+    },
+    "resolve": "c706a966-bada-4435-a905-aee8aee1cf96",
+    "reject": null,
+    "flow": "b3da9d94-dae4-4b2b-ae64-855f2d4b0194",
+    "date_created": "2024-09-20T15:01:39.829Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "70bbf70a-768c-4210-b518-11d3aaf3debd",
+    "name": "Déclencher le Flux",
+    "key": "trigger_rshlx",
+    "type": "trigger",
+    "position_x": 73,
+    "position_y": 1,
+    "options": {
+      "payload": "{{$last}}",
+      "flow": "f88ff93e-e07c-499c-a61d-fd5c8a715979"
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "b44d3e90-970b-4678-851c-96efcd7b0aaf",
+    "date_created": "2024-09-20T15:06:10.688Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "7970d49f-39df-45e4-bbb8-9c452aa10d23",
+    "name": "Lire les données",
+    "key": "item_read_yrqht",
+    "type": "item-read",
+    "position_x": 19,
+    "position_y": 1,
+    "options": {
+      "permissions": "$full",
+      "collection": "form_configs_notifications_templates",
+      "key": "{{$trigger.id}}"
+    },
+    "resolve": "31a9817e-928e-40bc-9bf2-1e1f4a65c013",
+    "reject": null,
+    "flow": "f88ff93e-e07c-499c-a61d-fd5c8a715979",
+    "date_created": "2024-09-20T15:13:45.949Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "88e8a6dd-8f27-4af9-b451-44e769bcc114",
+    "name": "Créer des données",
+    "key": "item_create_0l0og",
+    "type": "item-create",
+    "position_x": 19,
+    "position_y": 36,
+    "options": {
+      "collection": "notifications",
+      "permissions": "$full",
+      "emitEvents": true,
+      "payload": {
+        "status": "failed",
+        "body": "{{$trigger.parsedNotificationTemplate.template}}",
+        "to": "{{$trigger.recipient.template_email}}",
+        "collection_name": "{{$trigger.collectionName}}",
+        "collection_item_id": "{{$trigger.collectionItemId}}"
+      }
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-09-20T15:10:15.364Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "90e7ceaa-1933-467e-a100-7ac5092748cd",
+    "name": "Envoyer un e-mail",
+    "key": "mail_61u02",
+    "type": "mail",
+    "position_x": 20,
+    "position_y": 1,
+    "options": {
+      "to": [
+        "{{$trigger.recipient.template_email}}"
+      ],
+      "subject": "{{$trigger.parsedNotificationTemplate.translation.subject}}",
+      "type": "wysiwyg",
+      "body": "{{$trigger.parsedNotificationTemplate.translation.template}}"
+    },
+    "resolve": "5a2684d8-9fea-43e5-ac26-8f0f6c0f66bc",
+    "reject": null,
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-09-20T15:10:15.352Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "9e086166-3ed6-4a5f-a153-da1bb99a4ab2",
+    "name": "Parse recipients",
+    "key": "parse_recipients",
+    "type": "exec",
+    "position_x": 23,
+    "position_y": 18,
+    "options": {
+      "code": "module.exports = async function(data) {\n    const parsedNotificationTemplate = JSON.parse(data.$last)\n    const recipientsBase = parsedNotificationTemplate.recipients\n\tconst collectionName = data.$trigger.collectionName\n\tconst collectionItemId = data.$trigger.collectionItemId\n    \n    const recipients = recipientsBase.map((recipient) => {\n        return {\n            recipient,\n\t\t\tparsedNotificationTemplate,\n            collectionName,\n            collectionItemId,\n        }\n    })\n    \n    return recipients\n}"
+    },
+    "resolve": "a18eb0bc-50ab-4d6c-95c1-bdeb2a534992",
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:18:12.913Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "a18eb0bc-50ab-4d6c-95c1-bdeb2a534992",
+    "name": "Notify Recipients",
+    "key": "notify_recipients",
+    "type": "trigger",
+    "position_x": 41,
+    "position_y": 18,
+    "options": {
+      "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+      "payload": "{{$last}}"
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:18:12.908Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "a2196edb-a724-4341-908e-3dd012f05dff",
+    "name": "Déclencher le Flux",
+    "key": "trigger_s4z0q",
+    "type": "trigger",
+    "position_x": 4,
+    "position_y": 19,
+    "options": {
+      "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+      "payload": {
+        "languageCode": "{{$trigger.formSubmissionData.form_language}}",
+        "notificationTemplate": "{{ $last.notificationTemplate }}",
+        "notificationTemplateData": "{{ $last.formData }}",
+        "collectionName": "form_submissions",
+        "collectionItemId": "{{ $trigger.formSubmissionData.id }}"
+      }
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "f88ff93e-e07c-499c-a61d-fd5c8a715979",
+    "date_created": "2024-09-20T15:13:45.930Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "c2bf85bd-653e-43ac-9776-41d94d28630c",
+    "name": "Get Translations",
+    "key": "get_translations",
+    "type": "trigger",
+    "position_x": 19,
+    "position_y": 1,
+    "options": {
+      "flow": "6fad9f82-ad2b-4262-8e65-8ecf2af40b23",
+      "payload": "{{$trigger.notificationTemplate.translations}}"
+    },
+    "resolve": "2cbe4df5-cd07-4eac-ac98-d28b24677cbc",
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:16:49.249Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "c2edecc8-38d6-404f-bd74-5ef1a0831fe5",
+    "name": "Condition",
+    "key": "condition_7zcma",
+    "type": "condition",
+    "position_x": 18,
+    "position_y": 19,
+    "options": {
+      "filter": {
+        "$trigger": {
+          "recipient": {
+            "template_email": {
+              "_neq": "undefined"
+            }
+          }
+        }
+      }
+    },
+    "resolve": "175d278e-b505-4c91-9257-082640767044",
+    "reject": "88e8a6dd-8f27-4af9-b451-44e769bcc114",
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-09-20T15:10:15.374Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "c706a966-bada-4435-a905-aee8aee1cf96",
+    "name": "Render",
+    "key": "render",
+    "type": "exec",
+    "position_x": 37,
+    "position_y": 1,
+    "options": {
+      "code": "// Simple templating engine\n// Accepts two arguments - template and data\n// Template is a string with placeholders in the format {{ key }} or {{ key.nestedKey }}\n// Loops are supported with the format {{ loop:key }} ... {{ /loop:key }}\n// Data is an object with values to replace the placeholders\n// Example:\n// templateEngine({\n//     template: 'Hello {{ name }}! <ul>{{ loop:items }}<li>{{ name }} - {{ price }}</li>{{ /loop: items }}</ul>',\n//     data: {\n//         name: 'John',\n//         items: [\n//             { name: 'Apple', price: 1 },\n//             { name: 'Banana', price: 2 }\n//         ]\n//     }\n// });\n// Output: 'Hello John! <ul><li>Apple - 1</li><li>Banana - 2</li></ul>'\n// Created because Liquid templating is not available within Flow Operations and cannot use third party libs without extensions either.\n\nfunction templateEngine(template, data) {\n    // Function to handle replacement within a string for simple placeholders\n    function replaceString(str, localData) {\n        return str.replace(/\\{\\{\\s*([^}]+?)\\s*\\}\\}/g, function(match, key) {\n            let value = localData;\n            key.split('.').forEach(part => {\n                part = part.trim(); // Trim any whitespace around the key parts\n                if (value != null && value[part] !== undefined) {\n                    value = value[part];\n                } else {\n                    throw new Error(`Key '${part}' not found in the data.`);\n                }\n            });\n            return value;\n        });\n    }\n\n    // Function to process loop blocks\n    function processLoops(template, data) {\n        return template.replace(/\\{\\{\\s*loop:([^}]+?)\\s*\\}\\}([\\s\\S]*?)\\{\\{\\s*\\/loop:\\1\\s*\\}\\}/g, function(match, loopKey, loopItemTemplate) {\n            loopKey = loopKey.trim(); // Ensure loop key is correctly trimmed\n            if (data[loopKey] && Array.isArray(data[loopKey])) {\n                return data[loopKey].map(item => replaceString(loopItemTemplate, item)).join('');\n            } else {\n                throw new Error(`Key '${loopKey}' is missing or not an array.`);\n            }\n        });\n    }\n\n    // Validate input data and template are adequate\n    if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {\n        throw new Error(\"Data object is empty or invalid.\");\n    }\n\n    if (!template || typeof template !== 'string') {\n        throw new Error(\"Template is empty or not a string.\");\n    }\n\n    // Process loop blocks first, then replace remaining placeholders\n\tlet processedTemplate = processLoops(template, data);\n    return replaceString(processedTemplate, data);\n}\n\n\nmodule.exports = function(inputData) {\n\ttry {\n        const { $trigger, $last } = inputData\n\t\tconst data = $last\n        const template = $trigger.template\n\t    // We're passing template.template because the message templates have a template field.\n    \treturn templateEngine(template, data)\n    } catch(error) {\n        throw new Error(error.message)\n    }\n}"
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "b3da9d94-dae4-4b2b-ae64-855f2d4b0194",
+    "date_created": "2024-09-20T15:01:39.817Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "cbb62f4b-fab6-4bde-aaee-663c29efb61f",
+    "name": "Stringify Notification Template",
+    "key": "stringify_notification_template",
+    "type": "exec",
+    "position_x": 55,
+    "position_y": 1,
+    "options": {
+      "code": "module.exports = async function(data) {\n\tconst stringifiedNotificationTemplate = JSON.stringify(data.translated_template)\n    \n    return stringifiedNotificationTemplate\n}"
+    },
+    "resolve": "d31edbe6-27dc-4613-808b-d21cd572da50",
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:16:49.222Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "d31edbe6-27dc-4613-808b-d21cd572da50",
+    "name": "Parse template",
+    "key": "parsed_notification_template",
+    "type": "trigger",
+    "position_x": 5,
+    "position_y": 18,
+    "options": {
+      "flow": "b3da9d94-dae4-4b2b-ae64-855f2d4b0194",
+      "payload": {
+        "template": "{{stringify_notification_template}}",
+        "data": "{{$trigger.notificationTemplateData}}"
+      }
+    },
+    "resolve": "9e086166-3ed6-4a5f-a153-da1bb99a4ab2",
+    "reject": null,
+    "flow": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "date_created": "2024-09-20T15:18:12.925Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "eabd7a86-a8ad-4604-bf16-c2746da59a91",
+    "name": "Validate Condition",
+    "key": "validate_condition",
+    "type": "condition",
+    "position_x": 54,
+    "position_y": 19,
+    "options": {
+      "filter": {
+        "$last": {
+          "_eq": true
+        }
+      }
+    },
+    "resolve": "90e7ceaa-1933-467e-a100-7ac5092748cd",
+    "reject": "0a59cba2-8555-4644-8438-106cfcbbc873",
+    "flow": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "date_created": "2024-12-06T14:29:37.283Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "f3032d2c-9eee-4d16-ae97-84b6a71ea957",
+    "name": "Read Form Submission",
+    "key": "form_submission_data",
+    "type": "item-read",
+    "position_x": 19,
+    "position_y": 1,
+    "options": {
+      "permissions": "$full",
+      "collection": "{{$trigger.collection}}",
+      "key": "{{$trigger.key}}"
+    },
+    "resolve": "0e67a67a-ddce-42dc-a7ef-8322f27247a0",
+    "reject": null,
+    "flow": "b44d3e90-970b-4678-851c-96efcd7b0aaf",
+    "date_created": "2024-09-20T15:06:10.748Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  },
+  {
+    "id": "f38a2039-d01b-4636-8840-f38a21dd5b75",
+    "name": "Lire les données",
+    "key": "item_read_70glc",
+    "type": "item-read",
+    "position_x": 19,
+    "position_y": 1,
+    "options": {
+      "permissions": "$full",
+      "collection": "notifications_templates_translations",
+      "key": "{{$trigger}}"
+    },
+    "resolve": null,
+    "reject": null,
+    "flow": "6fad9f82-ad2b-4262-8e65-8ecf2af40b23",
+    "date_created": "2024-09-20T15:15:37.227Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544"
+  }
+]

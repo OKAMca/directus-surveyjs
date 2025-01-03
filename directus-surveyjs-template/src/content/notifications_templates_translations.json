@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "notifications_templates_id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a",
+    "languages_code": "en-US",
+    "subject": "Directus X SurveyJS - Email confirmation",
+    "conditions": null,
+    "template": "<div class=\"email-container\">\n<div class=\"email-header\">\n<h1>Confirmation Required</h1>\n</div>\n<div class=\"email-body\">\n<p>Dear {{first_name}},</p>\n<p>Thank you for signing up. Please confirm your email address by clicking the button below:</p>\n<p style=\"text-align: center;\"><a class=\"button\" href=\"[Confirmation Link]\">Confirm Email</a></p>\n<p>If you did not sign up for this account, you can ignore this email.</p>\n<p>Best regards,<br>Directus X SurveyJS</p>\n</div>\n<div class=\"email-footer\">\n<p>&copy; 2024 Directus X SurveyJS. All rights reserved.</p>\n</div>\n</div>"
+  },
+  {
+    "id": 3,
+    "notifications_templates_id": null,
+    "languages_code": "en-US",
+    "subject": "Contact Us - Submission Received",
+    "conditions": null,
+    "template": null
+  },
+  {
+    "id": 4,
+    "notifications_templates_id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a",
+    "languages_code": "fr-FR",
+    "subject": "Directus X SurveyJS - Confirmation par e-mail",
+    "conditions": null,
+    "template": "<h1>Confirmation requise</h1>\n<p>Cher {{first_name}},</p>\n<p>Merci de vous &ecirc;tre inscrit. Veuillez confirmer votre adresse e-mail en cliquant sur le bouton ci-dessous :</p>\n<p>Confirmer l'adresse e-mail</p>\n<p>Si vous n'avez pas cr&eacute;&eacute; ce compte, vous pouvez ignorer cet e-mail.</p>\n<p>Cordialement,<br>Directus X SurveyJS</p>\n<p>&copy; 2024 Directus X SurveyJS. Tous droits r&eacute;serv&eacute;s.</p>"
+  }
+]

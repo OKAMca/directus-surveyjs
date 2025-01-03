@@ -1,0 +1,111 @@
+[
+  {
+    "id": "6fad9f82-ad2b-4262-8e65-8ecf2af40b23",
+    "name": "[Notifications] Read Template Translations",
+    "icon": "notifications_active",
+    "color": null,
+    "description": "Read Notification Template Translations",
+    "status": "active",
+    "trigger": "operation",
+    "accountability": "all",
+    "options": {
+      "return": "$last"
+    },
+    "operation": "f38a2039-d01b-4636-8840-f38a21dd5b75",
+    "date_created": "2024-09-20T15:15:09.574Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  },
+  {
+    "id": "b3da9d94-dae4-4b2b-ae64-855f2d4b0194",
+    "name": "Parse Template",
+    "icon": "data_object",
+    "color": null,
+    "description": "Renders a simple template using template literals.",
+    "status": "active",
+    "trigger": "operation",
+    "accountability": "all",
+    "options": {
+      "return": "$last"
+    },
+    "operation": "64696f30-09f7-4dee-a494-85fb00206259",
+    "date_created": "2024-09-20T15:00:49.627Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  },
+  {
+    "id": "b44d3e90-970b-4678-851c-96efcd7b0aaf",
+    "name": "[Notifications - Forms] Form Submitted",
+    "icon": "notifications_active",
+    "color": null,
+    "description": "Triggered when a form is submittted",
+    "status": "active",
+    "trigger": "event",
+    "accountability": "all",
+    "options": {
+      "type": "action",
+      "scope": [
+        "items.create"
+      ],
+      "collections": [
+        "form_submissions",
+        "registrations"
+      ]
+    },
+    "operation": "f3032d2c-9eee-4d16-ae97-84b6a71ea957",
+    "date_created": "2024-09-20T15:02:34.107Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  },
+  {
+    "id": "c8ffbbb8-e00c-4df9-ab5f-b162556f9f62",
+    "name": "[Notifications] Process Notification Template",
+    "icon": "notifications_active",
+    "color": null,
+    "description": "Process template and triggers recipient flow",
+    "status": "active",
+    "trigger": "operation",
+    "accountability": "all",
+    "options": {
+      "return": "$last"
+    },
+    "operation": "c2bf85bd-653e-43ac-9776-41d94d28630c",
+    "date_created": "2024-09-20T15:11:02.720Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  },
+  {
+    "id": "ec888adb-0e9b-43d8-8219-817f9fdad0e8",
+    "name": "[Notifications] Notify recipient",
+    "icon": "notifications_active",
+    "color": null,
+    "description": "Sends en email to set recipients",
+    "status": "active",
+    "trigger": "operation",
+    "accountability": "all",
+    "options": {
+      "return": "$last"
+    },
+    "operation": "c2edecc8-38d6-404f-bd74-5ef1a0831fe5",
+    "date_created": "2024-09-20T15:07:12.151Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  },
+  {
+    "id": "f88ff93e-e07c-499c-a61d-fd5c8a715979",
+    "name": "[Notifications - Forms] Read Notification Templates",
+    "icon": "notifications_active",
+    "color": null,
+    "description": "Read Notification Template from a form submission",
+    "status": "active",
+    "trigger": "operation",
+    "accountability": "all",
+    "options": {
+      "return": "$last"
+    },
+    "operation": "7970d49f-39df-45e4-bbb8-9c452aa10d23",
+    "date_created": "2024-09-20T15:12:17.658Z",
+    "user_created": "3af0be20-4af1-4e9d-9cf7-333ccdad9544",
+    "operations": null
+  }
+]

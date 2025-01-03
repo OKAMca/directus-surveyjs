@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "form_configs_id": null,
+    "notifications_templates_id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a"
+  },
+  {
+    "id": 2,
+    "form_configs_id": null,
+    "notifications_templates_id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a"
+  },
+  {
+    "id": 3,
+    "form_configs_id": null,
+    "notifications_templates_id": null
+  },
+  {
+    "id": 4,
+    "form_configs_id": "5aff1e9e-a53f-4536-8046-45436686aa49",
+    "notifications_templates_id": "c9c8a0f6-67a4-438e-9af7-50ccf284be4a"
+  }
+]

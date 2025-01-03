@@ -1,0 +1,57 @@
+[
+  {
+    "collection": "form_configs",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17"
+  },
+  {
+    "collection": "form_submissions",
+    "action": "create",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17"
+  },
+  {
+    "collection": "module_extension_survey_settings",
+    "action": "read",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17"
+  },
+  {
+    "collection": "languages",
+    "action": "create",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17"
+  },
+  {
+    "collection": "registrations",
+    "action": "create",
+    "permissions": null,
+    "validation": null,
+    "presets": null,
+    "fields": [
+      "*"
+    ],
+    "policy": "abf8a154-5b1c-4a46-ac9c-7300570f4f17"
+  }
+]

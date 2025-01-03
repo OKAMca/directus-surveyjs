@@ -1,0 +1,103 @@
+[
+  {
+    "id": "a2587ead-a73a-4718-88e2-02de0c78d57a",
+    "bundle": null,
+    "meta": {
+      "enabled": true,
+      "id": "a2587ead-a73a-4718-88e2-02de0c78d57a",
+      "folder": "64489dc4-ae84-472d-a9f8-fad653d43ba5",
+      "source": "registry",
+      "bundle": null
+    },
+    "schema": {
+      "path": "/directus/extensions/.registry/64489dc4-ae84-472d-a9f8-fad653d43ba5",
+      "name": "@directus-labs/liquidjs-operation",
+      "version": "1.0.1",
+      "type": "operation",
+      "entrypoint": {
+        "app": "dist/app.js",
+        "api": "dist/api.js"
+      },
+      "host": "^10.10.0",
+      "sandbox": {
+        "enabled": true,
+        "requestedScopes": {
+          "request": {
+            "urls": [
+              "http://*",
+              "https://*"
+            ],
+            "methods": [
+              "GET"
+            ]
+          },
+          "log": {}
+        }
+      },
+      "local": true
+    }
+  },
+  {
+    "id": "e527eff8-2cba-4e00-a5e4-1422aac14f70",
+    "bundle": null,
+    "meta": {
+      "enabled": true,
+      "id": "e527eff8-2cba-4e00-a5e4-1422aac14f70",
+      "folder": "directus-extension-surveyjs",
+      "source": "module",
+      "bundle": null
+    },
+    "schema": {
+      "path": "/directus/node_modules/.pnpm/directus-extension-surveyjs@1.0.3_typescript@5.4.5/node_modules/directus-extension-surveyjs",
+      "name": "directus-extension-surveyjs",
+      "version": "1.0.3",
+      "type": "bundle",
+      "entrypoint": {
+        "app": "dist/app.js",
+        "api": "dist/api.js"
+      },
+      "entries": [
+        {
+          "name": "creator",
+          "type": "module"
+        },
+        {
+          "name": "survey-api",
+          "type": "endpoint"
+        }
+      ],
+      "host": "^10.10.0",
+      "local": true
+    }
+  },
+  {
+    "id": "7283fcfe-84cf-448b-a233-aeeb2385f584",
+    "bundle": "e527eff8-2cba-4e00-a5e4-1422aac14f70",
+    "meta": {
+      "enabled": true,
+      "id": "7283fcfe-84cf-448b-a233-aeeb2385f584",
+      "folder": "survey-api",
+      "source": "module",
+      "bundle": "e527eff8-2cba-4e00-a5e4-1422aac14f70"
+    },
+    "schema": {
+      "name": "survey-api",
+      "type": "endpoint"
+    }
+  },
+  {
+    "id": "84c40b06-5a24-4dee-9a75-2aa58b882113",
+    "bundle": "e527eff8-2cba-4e00-a5e4-1422aac14f70",
+    "meta": {
+      "enabled": true,
+      "id": "84c40b06-5a24-4dee-9a75-2aa58b882113",
+      "folder": "creator",
+      "source": "module",
+      "bundle": "e527eff8-2cba-4e00-a5e4-1422aac14f70"
+    },
+    "schema": {
+      "name": "creator",
+      "type": "module"
+    }
+  }
+]

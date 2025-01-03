@@ -1,0 +1,211 @@
+[
+  {
+    "id": "4daa04e9-114a-4f75-be9f-92741c3f125a",
+    "date_updated": "2025-01-03T18:10:58.727Z",
+    "friendly_id": "contact-us-forms",
+    "date_created": "2024-10-04T15:10:36.406Z",
+    "schema": {
+      "title": "Contact Us",
+      "logoPosition": "right",
+      "completedHtml": "<h3>Thank you for contacting us</h3>",
+      "completedBeforeHtml": "",
+      "loadingHtml": "<h3>Loading contact us..</h3>",
+      "pages": [
+        {
+          "name": "page1",
+          "elements": [
+            {
+              "type": "text",
+              "name": "firstName",
+              "title": "First name",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "lastName",
+              "startWithNewLine": false,
+              "title": "Last name",
+              "isRequired": true
+            },
+            {
+              "type": "text",
+              "name": "workEmail",
+              "title": "Work Email",
+              "isRequired": true
+            },
+            {
+              "type": "dropdown",
+              "name": "organizationLocation",
+              "title": "Where is your organization based?",
+              "isRequired": true,
+              "choices": [
+                {
+                  "value": "NA",
+                  "text": "North America"
+                },
+                {
+                  "value": "SA",
+                  "text": "South America"
+                },
+                {
+                  "value": "EU",
+                  "text": "Europe"
+                },
+                {
+                  "value": "AS",
+                  "text": "Asia"
+                },
+                {
+                  "value": "AF",
+                  "text": "Africa"
+                },
+                {
+                  "value": "OC",
+                  "text": "Oceania"
+                }
+              ]
+            },
+            {
+              "type": "dropdown",
+              "name": "chatSubject",
+              "title": "What would you like to chat about?",
+              "isRequired": true,
+              "choices": [
+                {
+                  "value": "productInformation",
+                  "text": "Product Information"
+                },
+                {
+                  "value": "customerSupport",
+                  "text": "Customer Support"
+                },
+                {
+                  "value": "salesAndPromotion",
+                  "text": "Sales and Promotions"
+                },
+                {
+                  "value": "accountManagement",
+                  "text": "Account Management"
+                },
+                {
+                  "value": "feedbackAndSuggestions",
+                  "text": "Feedback and Suggestions"
+                }
+              ],
+              "textWrapEnabled": false
+            },
+            {
+              "type": "comment",
+              "name": "productInformation",
+              "visibleIf": "{chatSubject} = 'productInformation'",
+              "title": "What specific product information are you looking for?",
+              "requiredIf": "{chatSubject} = 'productInformation'"
+            },
+            {
+              "type": "comment",
+              "name": "customerSupport",
+              "visibleIf": "{chatSubject} = 'customerSupport'",
+              "title": "What is your issue?",
+              "requiredIf": "{chatSubject} = 'customerSupport'"
+            },
+            {
+              "type": "comment",
+              "name": "salesAndPromotions",
+              "visibleIf": "{chatSubject} = 'salesAndPromotion'",
+              "title": "Are you interested in any specific sales or promotions?",
+              "requiredIf": "{chatSubject} = 'salesAndPromotion'"
+            },
+            {
+              "type": "comment",
+              "name": "accountManagement",
+              "visibleIf": "{chatSubject} = 'accountManagement'",
+              "title": "What aspect of your account would you like to manage?",
+              "requiredIf": "{chatSubject} = 'accountManagement'"
+            },
+            {
+              "type": "comment",
+              "name": "feedbackAndSuggestions",
+              "visibleIf": "{chatSubject} = 'feedbackAndSuggestions'",
+              "title": "Do you have specific feedback or suggestions to share?",
+              "requiredIf": "{chatSubject} = 'feedbackAndSuggestions'"
+            },
+            {
+              "type": "text",
+              "name": "projectsInfo",
+              "title": "Can you give us some context on your project(s)?",
+              "placeholder": "E.g. needs, timelines. We want to make this a good use of your time!"
+            }
+          ]
+        }
+      ]
+    },
+    "form_submission_collection": "contact_us_entries",
+    "title": "Contact Us",
+    "field_map": {
+      "first_name": "firstName",
+      "last_name": "lastName",
+      "work_email": "workEmail",
+      "organization_location": "organizationLocation",
+      "chat_subject": "chatSubject",
+      "projects_information": "projectsInfo",
+      "product_information_request": "productInformation",
+      "customer_support_request": "customerSupport",
+      "sales_and_promotions_request": "salesAndPromotions",
+      "account_management_request": "accountManagement",
+      "feedback_and_suggestions_request": "feedbackAndSuggestions"
+    },
+    "notification_templates": []
+  },
+  {
+    "id": "5aff1e9e-a53f-4536-8046-45436686aa49",
+    "date_updated": "2024-12-06T14:39:17.582Z",
+    "friendly_id": "registration-form",
+    "date_created": "2024-09-20T20:17:17.659Z",
+    "schema": {
+      "title": "Registration",
+      "description": "Please register.",
+      "logoPosition": "right",
+      "completedHtml": "<h3>Thank you for registering</h3>",
+      "completedBeforeHtml": "<h3>You have already completed this form.</h3>",
+      "loadingHtml": "<h3>Loading Form...</h3>",
+      "pages": [
+        {
+          "name": "page1",
+          "elements": [
+            {
+              "type": "text",
+              "name": "firstName",
+              "title": "First Name"
+            },
+            {
+              "type": "text",
+              "name": "lastName",
+              "title": "Last Name"
+            },
+            {
+              "type": "text",
+              "name": "email",
+              "title": "Email"
+            },
+            {
+              "type": "comment",
+              "name": "about",
+              "title": "About"
+            }
+          ]
+        }
+      ]
+    },
+    "form_submission_collection": "registrations",
+    "title": "Registration",
+    "field_map": {
+      "first_name": "firstName",
+      "last_name": "lastName",
+      "email": "email",
+      "about": "about"
+    },
+    "notification_templates": [
+      4
+    ]
+  }
+]
