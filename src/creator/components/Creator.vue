@@ -13,6 +13,7 @@
   import type { TDirectusLanguage, TDirectusUser, TFormConfig } from '../types';
   import { useApi } from '@directus/extensions-sdk';
   import { settingsToCreatorOptions } from "../lib/settings";
+  import { registerListBoxModels, setupListBoxToolbox } from "../lib/questions";
 
   const props = defineProps<{
     form: string
@@ -40,7 +41,12 @@
   
   const options = settingsToCreatorOptions(settings)
 
+  // Register the custom list box question types before the creator builds its
+  // toolbox / parses an existing form schema.
+  registerListBoxModels()
+
   const creator = new SurveyCreatorModel(options)
+  setupListBoxToolbox(creator)
   creator.locale = userLanguageCode ?? 'en'
 
   if (formConfig?.schema) {

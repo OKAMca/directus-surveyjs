@@ -11,6 +11,7 @@
 	import SurveyCreator from './Creator.vue'
 	import { surveyPlugin } from "survey-vue3-ui";
 	import { surveyCreatorPlugin } from "survey-creator-vue";
+	import { listBoxPlugin } from '../lib/questions';
 	import { useApi } from '@directus/extensions-sdk';
 	import type { TBreadcrumb, TDirectusLanguage, TDirectusUser, TFormConfig, TPage } from '../types';
 	import ModulePage from './ModulePage.vue'
@@ -88,7 +89,7 @@ import { SurveyCreatorModel } from 'survey-creator-core';
 			settings: settings.value,
 			api,
 			saveForm,
-		}).use(surveyPlugin).use(surveyCreatorPlugin)
+		}).use(surveyPlugin).use(surveyCreatorPlugin).use(listBoxPlugin)
 
 		if (creatorApp.value) {
 			// Initialize another Vue app inside this component

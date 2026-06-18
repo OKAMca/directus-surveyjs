@@ -116,6 +116,17 @@ Activate the module by navigating to:
   2. Having 2 languages setup, all translations are handled inside the `Translations` tab of the builder. There you can add languages you wish to translate your forms in the left sidebar. For each language added, a new column will be added to translate every 
      string your form could contain.
 
+### Custom question types
+
+In addition to the built-in SurveyJS questions, the builder registers two **List Box** question types — an always-visible, scrollable selectable list (no popover):
+
+| Toolbox title (en / fr)                              | Schema `type`      | Based on     | Selection |
+| ---------------------------------------------------- | ------------------ | ------------ | --------- |
+| List Box / Liste de sélection                        | `listbox`          | `radiogroup` | single    |
+| List Box (multiple) / Liste à sélection multiple     | `multilistbox`     | `checkbox`   | multiple  |
+
+Because they inherit from `radiogroup` / `checkbox`, they expose the **same options as the built-in choice questions** (choices, "choices by URL", "choices from question", validators, visibility rules, etc.) and are localized through the same Directus language setup. The list is keyboard navigable (arrow / Home / End / Enter / Space) and follows the WAI-ARIA `listbox` pattern.
+
 ## API Endpoints
 
 The extension provides several API endpoints for interacting with surveys. To access each route, you need to use the domain where your directus instance is hosted followed by `/survey-api` followed by the route. <br/>
