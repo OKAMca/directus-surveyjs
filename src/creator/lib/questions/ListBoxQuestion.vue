@@ -10,29 +10,26 @@
       :aria-required="question.isRequired ? 'true' : undefined"
       :aria-invalid="hasErrors ? 'true' : undefined"
       :aria-disabled="isReadOnly ? 'true' : undefined"
-      :aria-activedescendant="activeIndex >= 0 ? optionId(activeIndex) : undefined"
-      :tabindex="isReadOnly ? undefined : 0"
+      :aria-activedescendant="interactive && activeIndex >= 0 ? optionId(activeIndex) : undefined"
+      :tabindex="interactive ? 0 : undefined"
       @focus="onFocus"
       @blur="activeIndex = -1"
       @keydown="onKeyDown"
+      @click="onClick"
     >
-      <div
+      <!--
+        Each option is rendered through SurveyJS' item-value wrapper. At runtime
+        the wrapper is a transparent template renderer; in the creator designer
+        it is the `svc-item-value` adorner, which is what gives the question the
+        same inline add / remove / edit choice controls as the built-in choice
+        questions.
+      -->
+      <component
         v-for="(item, index) in choices"
-        :id="optionId(index)"
+        :is="question.getItemValueWrapperComponentName(item)"
         :key="item.id"
-        class="sv-listbox__option"
-        :class="{
-          'sv-listbox__option--selected': isSelected(item),
-          'sv-listbox__option--active': index === activeIndex,
-          'sv-listbox__option--disabled': !item.isEnabled,
-        }"
-        role="option"
-        :aria-selected="isSelected(item) ? 'true' : 'false'"
-        :aria-disabled="!item.isEnabled ? 'true' : undefined"
-        @click="onItemClick(item, index)"
-      >
-        <span class="sv-listbox__option-text">{{ item.text }}</span>
-      </div>
+        v-bind="itemBinding(item, index)"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +38,7 @@
   import { computed, ref } from "vue";
   import type { ItemValue, QuestionSelectBase } from "survey-core";
   import { useQuestion } from "survey-vue3-ui";
+  import ListBoxItem from "./ListBoxItem.vue";
 
   // The same component renders both the single- and multi-select list box; the
   // model's `allowMultiple` getter drives the selection semantics.
@@ -64,6 +62,9 @@
   const isReadOnly = computed(() => props.question.isReadOnly);
   const hasErrors = computed(() => props.question.errors.length > 0);
   const choices = computed<Array<ItemValue>>(() => props.question.visibleChoices);
+  // In the designer the question is edited, not answered: defer selection /
+  // keyboard handling to the adorner so clicks select a choice for editing.
+  const interactive = computed(() => !isReadOnly.value && !props.question.isDesignMode);
 
   // The active (focused) option for the `aria-activedescendant` pattern: focus
   // stays on the list box while arrow keys move the active descendant.
@@ -72,8 +73,22 @@
   const optionId = (index: number) => `${props.question.inputId}_opt_${index}`;
   const isSelected = (item: ItemValue) => props.question.isItemSelected(item);
 
+  // Props passed through the item-value wrapper down to the option renderer.
+  function itemBinding(item: ItemValue, index: number) {
+    return {
+      componentName: "survey-listbox-item",
+      componentData: {
+        question: props.question,
+        item,
+        index,
+        active: interactive.value && index === activeIndex.value,
+        data: props.question.getItemValueWrapperComponentData(item),
+      },
+    };
+  }
+
   function select(item: ItemValue | undefined) {
-    if (!item || !item.isEnabled || isReadOnly.value) return;
+    if (!item || !item.isEnabled || !interactive.value) return;
     if (allowMultiple.value) {
       props.question.clickItemHandler(item, !isSelected(item));
     } else {
@@ -81,11 +96,16 @@
     }
   }
 
-  function onItemClick(item: ItemValue, index: number) {
-    if (isReadOnly.value) return;
-    activeIndex.value = index;
-    listboxEl.value?.focus();
-    select(item);
+  // Interaction is delegated from the container so it works regardless of the
+  // wrapper component sitting between the list box and each option.
+  function onClick(event: MouseEvent) {
+    if (!interactive.value) return;
+    const option = (event.target as HTMLElement)?.closest<HTMLElement>('[role="option"]');
+    const index = option ? Number(option.dataset.index) : -1;
+    if (index >= 0) {
+      activeIndex.value = index;
+      select(choices.value[index]);
+    }
   }
 
   function onFocus() {
@@ -110,7 +130,7 @@
   }
 
   function onKeyDown(event: KeyboardEvent) {
-    if (isReadOnly.value) return;
+    if (!interactive.value) return;
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
