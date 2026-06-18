@@ -46,8 +46,10 @@
   registerListBoxModels()
 
   const creator = new SurveyCreatorModel(options)
-  setupListBoxToolbox(creator)
+  // Set the locale before adding the toolbox items: their titles are resolved
+  // eagerly via editorLocalization, so the language must already be in effect.
   creator.locale = userLanguageCode ?? 'en'
+  setupListBoxToolbox(creator)
 
   if (formConfig?.schema) {
     creator.text = JSON.stringify(formConfig?.schema)

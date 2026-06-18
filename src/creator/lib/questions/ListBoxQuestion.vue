@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from "vue";
+  import { computed, ref, watch } from "vue";
   import type { ItemValue, QuestionSelectBase } from "survey-core";
   import { useQuestion } from "survey-vue3-ui";
   import ListBoxItem from "./ListBoxItem.vue";
@@ -69,6 +69,15 @@
   // The active (focused) option for the `aria-activedescendant` pattern: focus
   // stays on the list box while arrow keys move the active descendant.
   const activeIndex = ref(-1);
+
+  // Keep the active option in range when the visible choices change (e.g.
+  // dynamic choices), otherwise arrow navigation can dead-end on a stale index.
+  watch(
+    () => choices.value.length,
+    (length) => {
+      if (activeIndex.value >= length) activeIndex.value = length - 1;
+    },
+  );
 
   const optionId = (index: number) => `${props.question.inputId}_opt_${index}`;
   const isSelected = (item: ItemValue) => props.question.isItemSelected(item);
