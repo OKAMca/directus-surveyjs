@@ -12,7 +12,12 @@
     :aria-selected="selected ? 'true' : 'false'"
     :aria-disabled="!item.isEnabled ? 'true' : undefined"
   >
-    <span class="sv-listbox__option-text">{{ item.text }}</span>
+    <!--
+      Render the label through `survey-string` (rather than plain text) so that
+      in the creator designer it becomes an inline string editor — the same
+      mechanism the built-in choice questions use to edit choice names in place.
+    -->
+    <survey-string class="sv-listbox__option-text" :locString="item.locText" />
   </div>
 </template>
 
