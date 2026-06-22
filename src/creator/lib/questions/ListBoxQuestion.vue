@@ -207,4 +207,19 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  /*
+   * Creator designer only. The designer renders these types with the native
+   * radiogroup/checkbox template (for the full choice editor); hide the
+   * radio / checkbox marker so the choice list reads like a plain list of
+   * options, matching the dropdown choice editor. Scoped to the creator's
+   * type-specific question wrapper so real radiogroup/checkbox questions are
+   * untouched.
+   */
+  .svc-question__content--listbox .sd-radio__decorator,
+  .svc-question__content--listbox input[type="radio"],
+  .svc-question__content--multilistbox .sd-checkbox__decorator,
+  .svc-question__content--multilistbox input[type="checkbox"] {
+    display: none;
+  }
 </style>
