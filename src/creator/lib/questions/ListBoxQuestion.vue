@@ -1,7 +1,6 @@
 <template>
   <div ref="root" class="sv-listbox-root">
     <div
-      ref="listboxEl"
       class="sv-listbox"
       :class="{ 'sv-listbox--disabled': isReadOnly, 'sv-listbox--error': hasErrors }"
       role="listbox"
@@ -10,26 +9,30 @@
       :aria-required="question.isRequired ? 'true' : undefined"
       :aria-invalid="hasErrors ? 'true' : undefined"
       :aria-disabled="isReadOnly ? 'true' : undefined"
-      :aria-activedescendant="interactive && activeIndex >= 0 ? optionId(activeIndex) : undefined"
-      :tabindex="interactive ? 0 : undefined"
+      :aria-activedescendant="activeIndex >= 0 ? optionId(activeIndex) : undefined"
+      :tabindex="isReadOnly ? undefined : 0"
       @focus="onFocus"
       @blur="activeIndex = -1"
       @keydown="onKeyDown"
       @click="onClick"
     >
-      <!--
-        Each option is rendered through SurveyJS' item-value wrapper. At runtime
-        the wrapper is a transparent template renderer; in the creator designer
-        it is the `svc-item-value` adorner, which is what gives the question the
-        same inline add / remove / edit choice controls as the built-in choice
-        questions.
-      -->
-      <component
+      <div
         v-for="(item, index) in choices"
-        :is="question.getItemValueWrapperComponentName(item)"
+        :id="optionId(index)"
         :key="item.id"
-        v-bind="itemBinding(item, index)"
-      />
+        class="sv-listbox__option"
+        :class="{
+          'sv-listbox__option--selected': isSelected(item),
+          'sv-listbox__option--active': index === activeIndex,
+          'sv-listbox__option--disabled': !item.isEnabled,
+        }"
+        role="option"
+        :data-index="index"
+        :aria-selected="isSelected(item) ? 'true' : 'false'"
+        :aria-disabled="!item.isEnabled ? 'true' : undefined"
+      >
+        <survey-string class="sv-listbox__option-text" :locString="item.locText" />
+      </div>
     </div>
   </div>
 </template>
@@ -38,12 +41,13 @@
   import { computed, ref, watch } from "vue";
   import type { ItemValue, QuestionSelectBase } from "survey-core";
   import { useQuestion } from "survey-vue3-ui";
-  import ListBoxItem from "./ListBoxItem.vue";
 
-  // The same component renders both the single- and multi-select list box; the
-  // model's `allowMultiple` getter drives the selection semantics.
-  // `clickItemHandler` lives on the concrete radiogroup/checkbox models rather
-  // than `QuestionSelectBase`, so it is declared explicitly here.
+  // This renderer is only used outside the designer (preview / runtime); the
+  // designer delegates to the native radiogroup/checkbox component for editing.
+  // The same component renders both list box types; the model's `allowMultiple`
+  // getter drives the selection semantics. `clickItemHandler` lives on the
+  // concrete radiogroup/checkbox models rather than `QuestionSelectBase`, so it
+  // is declared explicitly here.
   type ListBoxLikeQuestion = QuestionSelectBase & {
     allowMultiple: boolean;
     clickItemHandler: (item: ItemValue, checked?: boolean) => void;
@@ -54,7 +58,6 @@
   }>();
 
   const root = ref<HTMLElement>();
-  const listboxEl = ref<HTMLElement>();
   // Wires SurveyJS model reactivity into Vue so value / choice changes re-render.
   useQuestion(props, root);
 
@@ -62,9 +65,6 @@
   const isReadOnly = computed(() => props.question.isReadOnly);
   const hasErrors = computed(() => props.question.errors.length > 0);
   const choices = computed<Array<ItemValue>>(() => props.question.visibleChoices);
-  // In the designer the question is edited, not answered: defer selection /
-  // keyboard handling to the adorner so clicks select a choice for editing.
-  const interactive = computed(() => !isReadOnly.value && !props.question.isDesignMode);
 
   // The active (focused) option for the `aria-activedescendant` pattern: focus
   // stays on the list box while arrow keys move the active descendant.
@@ -82,22 +82,8 @@
   const optionId = (index: number) => `${props.question.inputId}_opt_${index}`;
   const isSelected = (item: ItemValue) => props.question.isItemSelected(item);
 
-  // Props passed through the item-value wrapper down to the option renderer.
-  function itemBinding(item: ItemValue, index: number) {
-    return {
-      componentName: "survey-listbox-item",
-      componentData: {
-        question: props.question,
-        item,
-        index,
-        active: interactive.value && index === activeIndex.value,
-        data: props.question.getItemValueWrapperComponentData(item),
-      },
-    };
-  }
-
   function select(item: ItemValue | undefined) {
-    if (!item || !item.isEnabled || !interactive.value) return;
+    if (!item || !item.isEnabled || isReadOnly.value) return;
     if (allowMultiple.value) {
       props.question.clickItemHandler(item, !isSelected(item));
     } else {
@@ -105,10 +91,10 @@
     }
   }
 
-  // Interaction is delegated from the container so it works regardless of the
-  // wrapper component sitting between the list box and each option.
+  // Selection is delegated from the container so a single handler covers every
+  // option regardless of its inner markup.
   function onClick(event: MouseEvent) {
-    if (!interactive.value) return;
+    if (isReadOnly.value) return;
     const option = (event.target as HTMLElement)?.closest<HTMLElement>('[role="option"]');
     const index = option ? Number(option.dataset.index) : -1;
     if (index >= 0) {
@@ -139,7 +125,7 @@
   }
 
   function onKeyDown(event: KeyboardEvent) {
-    if (!interactive.value) return;
+    if (isReadOnly.value) return;
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();

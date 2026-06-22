@@ -22,6 +22,15 @@ export class QuestionListBoxModel extends QuestionRadiogroupModel {
     return LISTBOX_TYPE;
   }
 
+  // In the creator designer, render with the parent's component so the question
+  // gets the native, fully-wired choice editor (inline add / remove / edit and
+  // the property-grid choices editor). Everywhere else (preview, runtime) use
+  // the custom `survey-listbox` renderer. The designer-vs-preview distinction
+  // is exactly `isDesignMode`.
+  getTemplate() {
+    return this.isDesignMode ? "radiogroup" : LISTBOX_TYPE;
+  }
+
   // Read by the renderer to decide single vs. multi selection semantics.
   get allowMultiple() {
     return false;
@@ -33,6 +42,10 @@ export class QuestionListBoxModel extends QuestionRadiogroupModel {
 export class QuestionListBoxMultipleModel extends QuestionCheckboxModel {
   getType() {
     return LISTBOX_MULTIPLE_TYPE;
+  }
+
+  getTemplate() {
+    return this.isDesignMode ? "checkbox" : LISTBOX_MULTIPLE_TYPE;
   }
 
   get allowMultiple() {

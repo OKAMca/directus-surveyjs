@@ -2,7 +2,6 @@ import type { App } from "vue";
 import type { SurveyCreatorModel } from "survey-creator-core";
 import { editorLocalization } from "survey-creator-core";
 import ListBoxQuestion from "./ListBoxQuestion.vue";
-import ListBoxItem from "./ListBoxItem.vue";
 import {
   LISTBOX_MULTIPLE_TYPE,
   LISTBOX_TYPE,
@@ -22,7 +21,6 @@ export const listBoxPlugin = {
   install(app: App) {
     app.component(`survey-${LISTBOX_TYPE}`, ListBoxQuestion);
     app.component(`survey-${LISTBOX_MULTIPLE_TYPE}`, ListBoxQuestion);
-    app.component("survey-listbox-item", ListBoxItem);
   },
 };
 
