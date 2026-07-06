@@ -5,9 +5,9 @@
 <script setup lang="ts">
   import { SurveyCreatorModel } from "survey-creator-core";
   import { surveyLocalization, setLicenseKey } from "survey-core";
-  import "survey-core/survey.i18n.js";
-  import "survey-creator-core/survey-creator-core.i18n.js";
-  import "survey-core/defaultV2.css";
+  import "survey-core/survey.i18n";
+  import "survey-creator-core/survey-creator-core.i18n";
+  import "survey-core/survey-core.css";
   import "survey-creator-core/survey-creator-core.css";
 
   import type { TDirectusLanguage, TDirectusUser, TFormConfig } from '../types';

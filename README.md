@@ -207,7 +207,7 @@ Your field map should look like
 import { useCallback } from 'react'
 import { Model } from 'survey-core'
 import { Survey } from 'survey-react-ui'
-import 'survey-core/defaultV2.min.css'
+import 'survey-core/survey-core.min.css'
 import 'survey-core/survey.i18n'
 
 interface TDirectusSurveyProps {
