@@ -30,7 +30,7 @@
 				"source": "src/survey-api/index.ts"
 			}
 		],
-		"host": "10.10.0"
+		"host": "11.13.0"
 	},
 	"scripts": {
 		"build": "directus-extension build",
@@ -49,7 +49,7 @@
 		"vue-router": "4.4.3"
 	},
 	"devDependencies": {
-		"@directus/extensions-sdk": "10.3.4",
+		"@directus/extensions-sdk": "11.0.9",
 		"@types/lodash": "4.17.7",
 		"@types/node": "22.3.0",
 		"typescript": "5.5.4",
@@ -58,8 +58,9 @@
 		"vue-i18n": "9.4.0"
 	},
 	"overrides": {
-		"form-data": "4.0.4",
-		"axios": "1.16.1",
-		"serialize-javascript": "7.0.5"
+		"axios": "1.18.1",
+		"form-data": "4.0.6",
+		"lodash-es": "4.18.1",
+		"serialize-javascript": "7.0.7"
 	}
 }
