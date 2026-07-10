@@ -1,5 +1,5 @@
 import {
-  defaultV2Css,
+  defaultCss,
   ElementFactory,
   QuestionCheckboxModel,
   QuestionRadiogroupModel,
@@ -111,8 +111,8 @@ export function registerListBoxModels() {
   // renders these types with the radiogroup/checkbox template, map their CSS to
   // the parent's so the choice editor is fully styled (otherwise the items fall
   // back to bare, unstyled native inputs).
-  defaultV2Css[LISTBOX_TYPE] = { ...defaultV2Css.radiogroup };
-  defaultV2Css[LISTBOX_MULTIPLE_TYPE] = { ...defaultV2Css.checkbox };
+  defaultCss[LISTBOX_TYPE] = { ...defaultCss.radiogroup };
+  defaultCss[LISTBOX_MULTIPLE_TYPE] = { ...defaultCss.checkbox };
 
   registerLocalization();
 }
