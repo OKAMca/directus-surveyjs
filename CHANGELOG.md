@@ -66,9 +66,9 @@ which required the following source updates:
 
 - Run `npm audit fix`
 
-- Updating minimal host (directus) 10.10.0 minimum version to 11.13.0
+- Updating minimal host (directus) 10.10.0 minimum version to 11.8.0
 
-- Updating @directus/extension-sdk 10.3.4 to 11.0.9 (10.13.0)
+- Updating @directus/extension-sdk 10.3.4 to 13.1.1 (directus 11.8.0)
 
 ## 1.0.3
 
