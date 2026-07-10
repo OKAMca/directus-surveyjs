@@ -30,7 +30,7 @@
 				"source": "src/survey-api/index.ts"
 			}
 		],
-		"host": "11.8.0"
+		"host": "^11.8.0"
 	},
 	"scripts": {
 		"build": "directus-extension build",
