@@ -4,4 +4,4 @@ declare module '*.vue' {
 	export default component;
 }
 
-declare module 'survey-creator-core/survey-creator-core.i18n.js';
+declare module 'survey-creator-core/survey-creator-core.i18n';
