@@ -36,7 +36,9 @@
 		"build": "directus-extension build",
 		"dev": "directus-extension build -w --no-minify",
 		"link": "directus-extension link",
-		"add": "directus-extension add"
+		"add": "directus-extension add",
+		"prepublishOnly": "npm run build",
+		"release": "bash scripts/release.sh"
 	},
 	"dependencies": {
 		"@vueuse/core": "^11.0.1",
