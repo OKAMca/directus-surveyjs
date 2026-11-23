@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -21,6 +24,8 @@ jobs:
         run: npm run build
 
       - name: Publish Package
-        run: npm publish --access public
+        # A GitHub pre-release publishes under the `next` dist-tag, so `latest` stays on stable versions.
+        run: npm publish --access public --tag "$DIST_TAG"
         env:
+          DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
