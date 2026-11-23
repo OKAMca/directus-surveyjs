@@ -5,6 +5,22 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.1.1
+
+### Security
+
+- Clear all Dependabot and npm audit alerts.
+- Update `@directus/extensions-sdk` 13.1.1 to 17.1.4, `vitest` to 4.1.12,
+  `vue` to 3.5.45, `vue-router` to 4.6.3 and `vue-i18n` to 11.4.14.
+- Update dependency overrides (axios 1.21.0, vite 8.3.5, zod 4.6.7,
+  esbuild 0.28.2, js-yaml, nanoid, follow-redirects, serialize-javascript,
+  deepmerge and others).
+
+### Added
+
+- Publishing workflow: a published GitHub release builds and publishes the
+  package to npm.
+
 ## 1.1.0
 
 ### Added
