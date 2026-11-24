@@ -2,19 +2,40 @@
 import { defineEndpoint } from '@directus/extensions-sdk'
 import { isEmpty } from 'lodash'
 
-export default defineEndpoint((router, { services, getSchema }) => {
+export default defineEndpoint((router, { services, getSchema, logger }) => {
 
   const { ItemsService } = services
 
   const settingsCollectionKey = "module_extension_survey_settings"
 
-  const catchError = (error: unknown, res: any, message: string) => {
-    const e = error as {name?: string, status?: number, code?: string}
-    const status = e?.status
-    return res?.status(status ?? 404).json({...e, details: message})
+  const errorStatus = (error: unknown) => {
+    const status = (error as {status?: unknown} | null)?.status
+    return typeof status === 'number' && status >= 400 && status < 600 ? status : 404
   }
 
-  const getSettings = async (req: any, res: any): Promise<Record<string, any>[]> => {
+  // Sends a status and a fixed message, never the error object, and never a second response.
+  const sendError = (res: any, status: number, message: string) => {
+    if (res.headersSent) return
+    res.status(status).json({ details: message })
+  }
+
+  const catchError = (error: unknown, res: any, message: string) => {
+    logger.warn(error, `[survey-api] ${message}`)
+    sendError(res, errorStatus(error), message)
+  }
+
+  // Express 4 does not catch a rejected async handler, and an unhandled rejection stops Directus.
+  const handle = (handler: (req: any, res: any) => Promise<void>) => async (req: any, res: any) => {
+    try {
+      await handler(req, res)
+    } catch (error) {
+      logger.error(error, '[survey-api] Unexpected error')
+      sendError(res, errorStatus(error), 'The request could not be completed.')
+    }
+  }
+
+  // Returns null after sending an error response; the caller must stop.
+  const getSettings = async (req: any, res: any): Promise<Record<string, any>[] | null> => {
     try {
       const settingsService = new ItemsService(settingsCollectionKey, {
         schema: await getSchema(),
@@ -25,15 +46,16 @@ export default defineEndpoint((router, { services, getSchema }) => {
           limit: 1
         })
       } catch (error) {
-        return catchError(error, res, 'Your module_extension_survey_settings or related collection READ permissions must be allowed.')
+        catchError(error, res, 'Your module_extension_survey_settings or related collection READ permissions must be allowed.')
+        return null
       }
   }
 
-  router.post('/form-submission/:formConfigId', async (req, res) => {
+  router.post('/form-submission/:formConfigId', handle(async (req, res) => {
 
     const settings = await getSettings(req, res)
+    if (!settings) return
 
-    try {
       const { formConfigId } = req.params 
 
       const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
@@ -52,19 +74,19 @@ export default defineEndpoint((router, { services, getSchema }) => {
       } catch (error) {
         return catchError(error, res, `Your ${formConfigCollection} or related collection READ permissions must be allowed.`)
       }
-      const formSubmissionCollection = formConfig.form_submission_collection
+      const formSubmissionCollection = formConfig?.form_submission_collection
 
       if (!formConfig || !formSubmissionCollection) {
-        throw new Error('No form config found.')
+        return sendError(res, 404, 'No form config found.')
       }
 
       const data = req.body
       if (!data || typeof data !== 'object') {
-        throw new Error('Body should be an object encoded in JSON.')
+        return sendError(res, 404, 'Body should be an object encoded in JSON.')
       }
 
       if (isEmpty(data)) {
-        throw new Error('Body is empty')
+        return sendError(res, 404, 'Body is empty')
       }
 
       const createItemInCollection = async (collectionName: string, itemData: object) => {
@@ -88,19 +110,13 @@ export default defineEndpoint((router, { services, getSchema }) => {
       }
 
       await createItemInCollection(formSubmissionCollection, data)
-      
-    } catch (error) {
-      const e = error as {name?: string, status?: number, code?: string}
-      const status = e?.status
-      res?.status(status ?? 404).json(error)
-    }
-  })
+  }))
 
-  router.patch('/form-config-update/:formConfigId', async (req, res) => {
-    try {
+  router.patch('/form-config-update/:formConfigId', handle(async (req, res) => {
       const { formConfigId } = req.params
 
       const settings = await getSettings(req, res)
+      if (!settings) return
 
       const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
 
@@ -124,18 +140,12 @@ export default defineEndpoint((router, { services, getSchema }) => {
         id: data,
         updatedSchema: req.body,
       })
+  }))
 
-    } catch (error) {
-      const e = error as {name?: string, status?: number, code?: string}
-      const status = e?.status
-      res?.status(status ?? 404).json(error)
-    }
-  })
-
-  router.post('/form-config-create', async (req, res) => {
-    try {
+  router.post('/form-config-create', handle(async (req, res) => {
 
       const settings = await getSettings(req, res)
+      if (!settings) return
 
       const formConfigCollection = settings?.[0]?.['form_config_collection'] ?? 'form_configs'
       let data
@@ -155,11 +165,5 @@ export default defineEndpoint((router, { services, getSchema }) => {
       }
 
       res.json(data)
-
-    } catch (error) {
-      const e = error as {name?: string, status?: number, code?: string}
-      const status = e?.status
-      res?.status(status ?? 404).json(error)
-    }
-  })
+  }))
 })
