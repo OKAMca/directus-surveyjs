@@ -32,7 +32,7 @@ const createResponse = () => {
   return { res, sent }
 }
 
-const mountRoutes = (ItemsService: unknown) => {
+const mountRoutes = (ItemsService: unknown, getSchema = async () => ({})) => {
   const routes = new Map<string, Handler>()
   const router = {
     post: (path: string, handler: Handler) => routes.set(`POST ${path}`, handler),
@@ -40,8 +40,8 @@ const mountRoutes = (ItemsService: unknown) => {
   }
   const logger = { error: vi.fn(), warn: vi.fn(), info: vi.fn() }
   const register = endpoint as unknown as (router: unknown, context: unknown) => void
-  register(router, { services: { ItemsService }, getSchema: async () => ({}), logger })
-  return routes
+  register(router, { services: { ItemsService }, getSchema, logger })
+  return { routes, logger }
 }
 
 // Every read and write is denied, as for an anonymous user without permissions.
@@ -76,7 +76,7 @@ const call = async (routes: Map<string, Handler>, route: string, req: Record<str
 
 describe('survey-api when the settings cannot be read', () => {
   it('answers an anonymous form submission once and does not reject', async () => {
-    const routes = mountRoutes(DeniedItemsService)
+    const { routes } = mountRoutes(DeniedItemsService)
 
     const sent = await call(routes, 'POST /form-submission/:formConfigId', {
       params: { formConfigId: '999999' },
@@ -92,7 +92,7 @@ describe('survey-api when the settings cannot be read', () => {
     ['PATCH /form-config-update/:formConfigId', { params: { formConfigId: '1' }, body: {} }],
     ['POST /form-config-create', { params: {}, body: {} }],
   ])('answers %s once and does not reject', async (route, req) => {
-    const routes = mountRoutes(DeniedItemsService)
+    const { routes } = mountRoutes(DeniedItemsService)
 
     const sent = await call(routes, route, req)
 
@@ -102,7 +102,7 @@ describe('survey-api when the settings cannot be read', () => {
   })
 
   it('does not put the raw error into the response', async () => {
-    const routes = mountRoutes(DeniedItemsService)
+    const { routes } = mountRoutes(DeniedItemsService)
 
     const sent = await call(routes, 'POST /form-submission/:formConfigId', {
       params: { formConfigId: '1' },
@@ -120,7 +120,7 @@ describe('survey-api when an unexpected error is thrown', () => {
       async readByQuery() { return [] }
       async readOne() { throw new Error('connection terminated: password=secret') }
     }
-    const routes = mountRoutes(BrokenItemsService)
+    const { routes } = mountRoutes(BrokenItemsService)
 
     const sent = await call(routes, 'POST /form-submission/:formConfigId', {
       params: { formConfigId: '1' },
@@ -129,6 +129,30 @@ describe('survey-api when an unexpected error is thrown', () => {
 
     expect(sent).toHaveLength(1)
     expect(JSON.stringify(sent[0]?.body)).not.toContain('secret')
+    expect(unhandled).toEqual([])
+  })
+
+  it('logs a submission schema error and resolves after sending one fixed response', async () => {
+    class SubmissionItemsService {
+      async readByQuery() { return [] }
+      async readOne() { return { form_submission_collection: 'submissions' } }
+    }
+    const error = Object.assign(new Error('internal schema lookup failed'), { status: 503 })
+    const getSchema = vi.fn(async () => ({}))
+      .mockResolvedValueOnce({}) // Settings schema
+      .mockResolvedValueOnce({}) // Form config schema
+      .mockRejectedValueOnce(error)
+    const { routes, logger } = mountRoutes(SubmissionItemsService, getSchema)
+
+    const sent = await call(routes, 'POST /form-submission/:formConfigId', {
+      params: { formConfigId: '1' },
+      body: { data: { name: 'x' } },
+    })
+
+    expect(sent).toEqual([{ status: 503, body: { details: 'The request could not be completed.' } }])
+    expect(logger.error).toHaveBeenCalledTimes(1)
+    expect(logger.error).toHaveBeenCalledWith(error, '[survey-api] Unexpected error')
+    expect(JSON.stringify(sent)).not.toContain(error.message)
     expect(unhandled).toEqual([])
   })
 })
@@ -145,7 +169,7 @@ describe('survey-api when everything is allowed', () => {
         return 7
       }
     }
-    const routes = mountRoutes(AllowedItemsService)
+    const { routes } = mountRoutes(AllowedItemsService)
 
     const sent = await call(routes, 'POST /form-submission/:formConfigId', {
       params: { formConfigId: '1' },
