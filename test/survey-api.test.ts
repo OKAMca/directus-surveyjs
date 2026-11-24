@@ -75,8 +75,15 @@ const call = async (routes: Map<string, Handler>, route: string, req: Record<str
 }
 
 describe('survey-api when the settings cannot be read', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('answers an anonymous form submission once and does not reject', async () => {
-    const { routes } = mountRoutes(DeniedItemsService)
+    const readOne = vi.spyOn(DeniedItemsService.prototype, 'readOne')
+    const createOne = vi.spyOn(DeniedItemsService.prototype, 'createOne')
+    const getSchema = vi.fn(async () => ({}))
+    const { routes } = mountRoutes(DeniedItemsService, getSchema)
 
     const sent = await call(routes, 'POST /form-submission/:formConfigId', {
       params: { formConfigId: '999999' },
@@ -86,19 +93,28 @@ describe('survey-api when the settings cannot be read', () => {
     expect(sent).toHaveLength(1)
     expect(sent[0]?.status).toBe(403)
     expect(unhandled).toEqual([])
+    expect(readOne).not.toHaveBeenCalled()
+    expect(createOne).not.toHaveBeenCalled()
+    expect(getSchema).toHaveBeenCalledTimes(1)
   })
 
   it.each([
     ['PATCH /form-config-update/:formConfigId', { params: { formConfigId: '1' }, body: {} }],
     ['POST /form-config-create', { params: {}, body: {} }],
   ])('answers %s once and does not reject', async (route, req) => {
-    const { routes } = mountRoutes(DeniedItemsService)
+    const createOne = vi.spyOn(DeniedItemsService.prototype, 'createOne')
+    const updateOne = vi.spyOn(DeniedItemsService.prototype, 'updateOne')
+    const getSchema = vi.fn(async () => ({}))
+    const { routes } = mountRoutes(DeniedItemsService, getSchema)
 
     const sent = await call(routes, route, req)
 
     expect(sent).toHaveLength(1)
     expect(sent[0]?.status).toBe(403)
     expect(unhandled).toEqual([])
+    expect(createOne).not.toHaveBeenCalled()
+    expect(updateOne).not.toHaveBeenCalled()
+    expect(getSchema).toHaveBeenCalledTimes(1)
   })
 
   it('does not put the raw error into the response', async () => {
