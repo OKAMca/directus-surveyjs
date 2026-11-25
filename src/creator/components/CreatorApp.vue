@@ -107,4 +107,9 @@ import { SurveyCreatorModel } from 'survey-creator-core';
 	#sub-app {
 		height: 100%;
 	}
+
+	/* The dark default highlight made auto-selected field text unreadable */
+	#sub-app ::selection {
+		background-color: #d1d5db;
+	}
 </style>
